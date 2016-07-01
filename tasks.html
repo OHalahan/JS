@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)ftp://192.168.64.110/pub/dev_trainee/javascript.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JavaScript tasks</title>
+        <style>
+            body {
+                font-family: "Roboto","Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+            }
+            code {
+                display: block;
+                font-family: "Courier New, Courier, monospace";
+                font-size: 16px;
+            }
+            .container {
+                margin-top: 15px;
+                margin-bottom: 15px;
+                margin-left: 5px;
+                margin-right: 5px;
+                border-radius: 2px;
+                /*border: solid 1px rgba(0, 0, 0, 0.2);*/
+                box-shadow: 2px 2px 7px 1px rgba(0, 0, 0, 0.5);
+                transition: box-shadow 0.5s ease;
+                -moz-transition: box-shadow 0.5s ease;
+            }
+            .body {
+                display: inline-block;
+                width: 100%;
+            }
+            .container:hover {
+                box-shadow: 3px 3px 15px 4px rgba(0, 0, 0, 0.5);
+                transition: box-shadow 0.5s ease;
+                -moz-transition: box-shadow 0.5s ease;
+            }
+            .task_header {
+                padding: 0.5em;
+                background-color: #1976D2;
+                border-top-left-radius: 2px;
+                border-top-right-radius: 2px;
+                color: #fff;
+                font-weight: bold;
+            }
+            .task_body, .task_example {
+                padding-left: 1em;
+                padding-top: 0.5em;
+                padding-bottom: 0.5em;
+                font-size: 16px;
+                opacity: 0.87;
+                float: left;
+                max-width: 55%;
+                width: 55%;
+            }
+            .task_example {
+                overflow: hidden;
+                float: right;
+                max-width: 40%;
+                width: 40%;
+            }
+            .note {
+                font-style: italic;
+            }
+            .title {
+                margin: 10px 0px 5px 10px;
+            }
+            #sample-form-mul-div {
+                background-image: url("data:image/png;base64,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");
+                width: 252px;
+                height: 143px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Week 1 -->
+        <h3 class="title">Week 1. Basics, Functions, Math, Regexp</h3>
+
+        <!-- Task 1 -->
+        <div class="container">
+            <div class="task_header">
+                Week 1. Task 1
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to convert temperatures to and from celsius, fahrenheit.</p>
+                    <p class="note">Formula : c/5 = (f-32)/9; (where c = temperature in celsius and f = temperature in fahrenheit).</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Expected Output:<br>
+                        60C is 140F<br>
+                        45F is 7.222222222222222C<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 2 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 2
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to get the website URL (loading page).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 3 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 3
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to calculate multiplication and division of two numbers (input from user).</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Sample form:<br>
+                        </p><div id="sample-form-mul-div"></div>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 4 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 4
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to pass a 'JavaScript function' as parameter.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 5 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 5
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript function that generates all combinations of a string.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Example string : 'dog'<br>
+                        Expected Output : d,do,dog,o,og,g
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 6 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 6
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript function that returns a passed string with letters in alphabetical order.
+                        Assume punctuation and numbers symbols are not included in the passed string.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Example string : 'webmaster'<br>
+                        Expected Output : 'abeemrstw'
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 7 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 7
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript function that accepts a string as a parameter and counts the number of vowels within the string.</p>
+                    <p class="note">As the letter 'y' can be regarded as both a vowel and a consonant, we do not count 'y' as vowel here.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Example string : 'The quick brown fox'<br>
+                        Expected Output : 5
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 8 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 8
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript function to convert a binary number to a decimal number.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Test Data: <br>
+                        console.log(bin_to_dec('110011')); <br>
+                        console.log(bin_to_dec('100')); <br>
+                        51<br>
+                        4
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 9 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 9
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript function to generate a random integer. Intervals "from" and "to" are possible. If "to" &gt; "from" then swap them.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Test Data:<br>
+                        console.log(rand(20,1));<br>
+                        console.log(rand(1,10));<br>
+                        console.log(rand(6));<br>
+                        console.log(rand());<br>
+                        15<br>
+                        5<br>
+                        1<br>
+                        0
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 10 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 10
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to search a date within a string.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 11 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 11
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript function to check whether a given value is an valid url or not.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 12 -->
+        <div class="container">
+            <div class="task_header">
+                 Week 1. Task 12
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript function to print an integer with commas as thousands separators.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Test Data: <br>
+                        console.log(thousands_separators(1000)); <br>
+                        "1,000" <br>
+                        console.log(thousands_separators(10000.23)); <br>
+                        "10,000.23" <br>
+                        console.log(thousands_separators(100000)); <br>
+                        "100,000"
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <!-- Week 2 -->
+        <h3 class="title">Week 2. Working with DOM, Objects, AJAX</h3>
+
+        <!-- Task 1 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 1
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Here is a sample html file with a submit button. Now modify the style of the paragraph text through javascript code</p>
+                    <p class="note">Clicking on the button the font, font size, and color of the paragraph text will be changed.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">Sample HTML file:</p><p>
+                    <code>
+                            &lt;!DOCTYPE html&gt;<br>
+                            &lt;html&gt;&lt;head&gt;<br>
+                            &lt;meta charset="utf-8" /&gt;<br>
+                            &lt;title&gt;Task 1&lt;/title&gt;<br>
+                            &lt;/head&gt;<br>
+                            &lt;body&gt;<br>
+                            &lt;p id ='text'&gt;JavaScript Exercises - Week 2&lt;/p&gt;<br>
+                            &lt;div&gt;<br>
+                            &lt;button id="jsstyle"<br>
+                            onclick="js_style()"&gt;Style&lt;/button&gt;<br>
+                            &lt;/div&gt;<br>
+                            &lt;/body&gt;<br>
+                            &lt;/html&gt;
+                    </code>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 2 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 2
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to remove items from a dropdown list.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Sample HTML file:
+                    </p>
+                    <code>
+                        &lt;!DOCTYPE html&gt;<br>
+                        &lt;html&gt;&lt;head&gt;<br>
+                        &lt;meta charset="utf-8" /&gt;<br>
+                        &lt;title&gt;Remove items from a dropdown list&lt;/title&gt;<br>
+                        &lt;/head&gt;&lt;body&gt;&lt;form&gt;<br>
+                        &lt;select id="colorSelect"&gt;<br>
+                        &lt;option&gt;Red&lt;/option&gt;<br>
+                        &lt;option&gt;Green&lt;/option&gt;<br>
+                        &lt;option&gt;White&lt;/option&gt;<br>
+                        &lt;option&gt;Black&lt;/option&gt;<br>
+                        &lt;/select&gt;<br>
+                        &lt;input type="button" onclick="removecolor()" value="Select and Remove"&gt;&lt;br&gt;<br>
+                        &lt;/form&gt;&lt;/body&gt;&lt;/html&gt;
+                    </code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 3 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 3
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to display a random image (clicking on a button) from the following list.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Sample Image information:</p><p>
+                        "http://farm4.staticflickr.com/3691/11268502654_f28f05966c_m.jpg", width: "240", height: "160"<br>
+                        "http://farm1.staticflickr.com/33/45336904_1aef569b30_n.jpg", width: "320", height: "195"<br>
+                        "http://farm6.staticflickr.com/5211/5384592886_80a512e2c9.jpg", width: "500", height: "343"
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 4 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 4
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to highlight the bold words of the following paragraph, on mouse over a certain link.</p>
+                    <p class="note">Sample link and text:</p>
+                    JavaScript is a <b>high-level</b>, <b>dynamic</b>, <b>untyped</b>, and <b>interpreted</b> programming language. It has been standardized in the <b>ECMAScript</b> language specification.
+                    Alongside <b>HTML</b> and <b>CSS</b>, it is one of the three core technologies of <b>World Wide Web</b> content production.
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 5 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 5
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to get the width and height of the window (any time the window is resized).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 6 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 6
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to list the properties of a JavaScript object</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">Sample object:</p><p>
+                        var student = {<br>
+                        name : "David Rayy",<br>
+                        sclass : "VI",<br>
+                        rollno : 12 };<br>
+                    </p><p class="note">
+                        Sample Output: name,sclass,rollno
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 7 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 7
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to delete the <i>rollno</i> property from the previous task object. Also print the object before or after deleting the property.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 8 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 8
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to get the length of a JavaScript object.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 9 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 9
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to display the reading status (i.e. display book name, author name and reading status) of the following books.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">Sample Object:</p>
+                    var library = [<br>
+                    {<br>
+                        author: 'Bill Gates',<br>
+                        title: 'The Road Ahead',<br>
+                        readingStatus: true<br>
+                    },<br>
+                    {<br>
+                        author: 'Steve Jobs',<br>
+                        title: 'Walter Isaacson',<br>
+                        readingStatus: true<br>
+                    },<br>
+                    {<br>
+                        author: 'Suzanne Collins',<br>
+                        title:  'Mockingjay: The Final Book of The Hunger Games',<br>
+                        readingStatus: false<br>
+                    }];
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 10 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 10
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript program to sort an array of JavaScript objects.</p>
+                    <p class="note">You can use array from previous task</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 11 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 11
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Write a JavaScript function to convert an object into a list of `[key, value]` pairs</p>
+                </div>
+                <div class="task_example">
+                    <p class="note"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task 12 -->
+        <div class="container">
+            <div class="task_header">
+                Week 2. Task 12
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Using <b>XMLHttpRequest</b> you need to make an AJAX call to the url 'http://courses.dce.harvard.edu/~cscie3/ajax.php' The repsonse will be the JSON string</p>
+                    <p>Your task is to create the event listener that handles the response (readystatechange) for a successful request, converts the response to a JSON object, and outputs the 'school' proerty value using logMessage().
+                        You may assume that the response will be JSON.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">Output will appear below:</p>
+                    Harvard University Extension
+                </div>
+            </div>
+        </div>
+
+        <h3 class="title">How to</h3>
+        <!-- Task 13 -->
+        <div class="container">
+            <div class="task_header">
+                How to arrange these tasks?
+            </div>
+            <div class="body">
+                <div class="task_body">
+                    <p>Create separate JS file for each task. When the tasks for 1st/2nd week will be finished include them into some 'index.html' file and send js files and html on review.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">Have questions? Ask <a href="mailto:stalker@portaone.com">Eugene Shevchenko</a></p>
+                </div>
+            </div>
+        </div>
+    
+</body></html>
