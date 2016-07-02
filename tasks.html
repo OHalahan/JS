@@ -217,7 +217,7 @@
                 </div>
                 <div class="task_example">
                     <p class="note">
-                        Enter string: <input type="text" id="binary" value="110011">
+                        Enter bunary value: <input type="number" id="binary" value="110011">
                         <button id="binaryConvert">Convert</button><br>
                         <p class="note", id="out8"></p>
                     </p>
@@ -236,15 +236,10 @@
                 </div>
                 <div class="task_example">
                     <p class="note">
-                        Test Data:<br>
-                        console.log(rand(20,1));<br>
-                        console.log(rand(1,10));<br>
-                        console.log(rand(6));<br>
-                        console.log(rand());<br>
-                        15<br>
-                        5<br>
-                        1<br>
-                        0
+                        <p>Enter max: <input type="number" id="max" value="20"></p>
+                        <p>Enter min: <input type="number" id="min" value="2"></p>
+                        <button id="genRand">Generate</button><br>
+                        <p class="note", id="out9"></p>
                     </p>
                 </div>
             </div>
@@ -259,6 +254,13 @@
                 <div class="task_body">
                     <p>Write a JavaScript program to search a date within a string.</p>
                 </div>
+                <div class="task_example">
+                    <p class="note">
+                        Enter the date: <input type="text" id="date" value="22-06-2016">
+                        <button id="parseDate">Check</button><br>
+                        <p class="note", id="out10"></p>
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -270,6 +272,13 @@
             <div class="body">
                 <div class="task_body">
                     <p>Write a JavaScript function to check whether a given value is an valid url or not.</p>
+                </div>
+                <div class="task_example">
+                    <p class="note">
+                        Enter the date: <input type="text" id="maybeURL" value="gmail.com">
+                        <button id="checkURL">Check</button><br>
+                        <p class="note", id="out11"></p>
+                    </p>
                 </div>
             </div>
         </div>
@@ -285,13 +294,9 @@
                 </div>
                 <div class="task_example">
                     <p class="note">
-                        Test Data: <br>
-                        console.log(thousands_separators(1000)); <br>
-                        "1,000" <br>
-                        console.log(thousands_separators(10000.23)); <br>
-                        "10,000.23" <br>
-                        console.log(thousands_separators(100000)); <br>
-                        "100,000"
+                        Enter the number: <input type="number" id="solid" value="10000.23">
+                        <button id="separateNum">Convert</button><br>
+                        <p class="note", id="out12"></p>
                     </p>
                 </div>
             </div>
@@ -308,6 +313,10 @@
         <script src="week1_task6.js"></script>
         <script src="week1_task7.js"></script>
         <script src="week1_task8.js"></script>
+        <script src="week1_task9.js"></script>
+        <script src="week1_task10.js"></script>
+        <script src="week1_task11.js"></script>
+        <script src="week1_task12.js"></script>
 
         <!-- HANDLERS -->
         <script> document.getElementById("conv").onclick = returnConverted </script>
@@ -318,5 +327,9 @@
         <script> document.getElementById("sortOut").onclick = sortString </script>
         <script> document.getElementById("vowels").onclick = vCount </script>
         <script> document.getElementById("binaryConvert").onclick = binToDec </script>
+        <script> document.getElementById("genRand").onclick = randomInterval </script>
+        <script> document.getElementById("parseDate").onclick = isDate </script>
+        <script> document.getElementById("checkURL").onclick = isURL </script>
+        <script> document.getElementById("separateNum").onclick = separate </script>
 
 </body></html>
