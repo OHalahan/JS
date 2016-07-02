@@ -83,10 +83,14 @@
                     <p class="note">Formula : c/5 = (f-32)/9; (where c = temperature in celsius and f = temperature in fahrenheit).</p>
                 </div>
                 <div class="task_example">
-                    <p class="note">
-                        Expected Output:<br>
-                        60C is 140F<br>
-                        45F is 7.222222222222222C<br>
+                    <p>
+                        Temperature: <input type="number" id="temp" value="60">
+                        <input type="radio" id="scaleC" name=scale checked=true> C&deg;
+                        <input type="radio" id="scaleF" name=scale> F&deg;
+                        <button id="conv">Convert</button>
+                        <p class="note", id="out1"></p>
+
+                        <script> document.getElementById("conv").onclick = returnConverted; </script>
                     </p>
                 </div>
             </div>
@@ -100,6 +104,11 @@
             <div class="body">
                 <div class="task_body">
                     <p>Write a JavaScript program to get the website URL (loading page).</p>
+                </div>
+                <div class="task_example">
+                    <p>
+                        document.location.href
+                    </p>
                 </div>
             </div>
         </div>
@@ -284,257 +293,8 @@
         </div>
 
         <br>
-        <!-- Week 2 -->
-        <h3 class="title">Week 2. Working with DOM, Objects, AJAX</h3>
 
-        <!-- Task 1 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 1
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Here is a sample html file with a submit button. Now modify the style of the paragraph text through javascript code</p>
-                    <p class="note">Clicking on the button the font, font size, and color of the paragraph text will be changed.</p>
-                </div>
-                <div class="task_example">
-                    <p class="note">Sample HTML file:</p><p>
-                    <code>
-                            &lt;!DOCTYPE html&gt;<br>
-                            &lt;html&gt;&lt;head&gt;<br>
-                            &lt;meta charset="utf-8" /&gt;<br>
-                            &lt;title&gt;Task 1&lt;/title&gt;<br>
-                            &lt;/head&gt;<br>
-                            &lt;body&gt;<br>
-                            &lt;p id ='text'&gt;JavaScript Exercises - Week 2&lt;/p&gt;<br>
-                            &lt;div&gt;<br>
-                            &lt;button id="jsstyle"<br>
-                            onclick="js_style()"&gt;Style&lt;/button&gt;<br>
-                            &lt;/div&gt;<br>
-                            &lt;/body&gt;<br>
-                            &lt;/html&gt;
-                    </code>
-                    </p>
-                </div>
-            </div>
-        </div>
+        <!-- SCRIPTS -->
+        <script src="week1_task1.js"> </script>
 
-        <!-- Task 2 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 2
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to remove items from a dropdown list.</p>
-                </div>
-                <div class="task_example">
-                    <p class="note">
-                        Sample HTML file:
-                    </p>
-                    <code>
-                        &lt;!DOCTYPE html&gt;<br>
-                        &lt;html&gt;&lt;head&gt;<br>
-                        &lt;meta charset="utf-8" /&gt;<br>
-                        &lt;title&gt;Remove items from a dropdown list&lt;/title&gt;<br>
-                        &lt;/head&gt;&lt;body&gt;&lt;form&gt;<br>
-                        &lt;select id="colorSelect"&gt;<br>
-                        &lt;option&gt;Red&lt;/option&gt;<br>
-                        &lt;option&gt;Green&lt;/option&gt;<br>
-                        &lt;option&gt;White&lt;/option&gt;<br>
-                        &lt;option&gt;Black&lt;/option&gt;<br>
-                        &lt;/select&gt;<br>
-                        &lt;input type="button" onclick="removecolor()" value="Select and Remove"&gt;&lt;br&gt;<br>
-                        &lt;/form&gt;&lt;/body&gt;&lt;/html&gt;
-                    </code>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 3 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 3
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to display a random image (clicking on a button) from the following list.</p>
-                </div>
-                <div class="task_example">
-                    <p class="note">
-                        Sample Image information:</p><p>
-                        "http://farm4.staticflickr.com/3691/11268502654_f28f05966c_m.jpg", width: "240", height: "160"<br>
-                        "http://farm1.staticflickr.com/33/45336904_1aef569b30_n.jpg", width: "320", height: "195"<br>
-                        "http://farm6.staticflickr.com/5211/5384592886_80a512e2c9.jpg", width: "500", height: "343"
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 4 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 4
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to highlight the bold words of the following paragraph, on mouse over a certain link.</p>
-                    <p class="note">Sample link and text:</p>
-                    JavaScript is a <b>high-level</b>, <b>dynamic</b>, <b>untyped</b>, and <b>interpreted</b> programming language. It has been standardized in the <b>ECMAScript</b> language specification.
-                    Alongside <b>HTML</b> and <b>CSS</b>, it is one of the three core technologies of <b>World Wide Web</b> content production.
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 5 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 5
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to get the width and height of the window (any time the window is resized).</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 6 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 6
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to list the properties of a JavaScript object</p>
-                </div>
-                <div class="task_example">
-                    <p class="note">Sample object:</p><p>
-                        var student = {<br>
-                        name : "David Rayy",<br>
-                        sclass : "VI",<br>
-                        rollno : 12 };<br>
-                    </p><p class="note">
-                        Sample Output: name,sclass,rollno
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 7 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 7
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to delete the <i>rollno</i> property from the previous task object. Also print the object before or after deleting the property.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 8 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 8
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to get the length of a JavaScript object.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 9 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 9
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to display the reading status (i.e. display book name, author name and reading status) of the following books.</p>
-                </div>
-                <div class="task_example">
-                    <p class="note">Sample Object:</p>
-                    var library = [<br>
-                    {<br>
-                        author: 'Bill Gates',<br>
-                        title: 'The Road Ahead',<br>
-                        readingStatus: true<br>
-                    },<br>
-                    {<br>
-                        author: 'Steve Jobs',<br>
-                        title: 'Walter Isaacson',<br>
-                        readingStatus: true<br>
-                    },<br>
-                    {<br>
-                        author: 'Suzanne Collins',<br>
-                        title:  'Mockingjay: The Final Book of The Hunger Games',<br>
-                        readingStatus: false<br>
-                    }];
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 10 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 10
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript program to sort an array of JavaScript objects.</p>
-                    <p class="note">You can use array from previous task</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 11 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 11
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Write a JavaScript function to convert an object into a list of `[key, value]` pairs</p>
-                </div>
-                <div class="task_example">
-                    <p class="note"></p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Task 12 -->
-        <div class="container">
-            <div class="task_header">
-                Week 2. Task 12
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Using <b>XMLHttpRequest</b> you need to make an AJAX call to the url 'http://courses.dce.harvard.edu/~cscie3/ajax.php' The repsonse will be the JSON string</p>
-                    <p>Your task is to create the event listener that handles the response (readystatechange) for a successful request, converts the response to a JSON object, and outputs the 'school' proerty value using logMessage().
-                        You may assume that the response will be JSON.</p>
-                </div>
-                <div class="task_example">
-                    <p class="note">Output will appear below:</p>
-                    Harvard University Extension
-                </div>
-            </div>
-        </div>
-
-        <h3 class="title">How to</h3>
-        <!-- Task 13 -->
-        <div class="container">
-            <div class="task_header">
-                How to arrange these tasks?
-            </div>
-            <div class="body">
-                <div class="task_body">
-                    <p>Create separate JS file for each task. When the tasks for 1st/2nd week will be finished include them into some 'index.html' file and send js files and html on review.</p>
-                </div>
-                <div class="task_example">
-                    <p class="note">Have questions? Ask <a href="mailto:stalker@portaone.com">Eugene Shevchenko</a></p>
-                </div>
-            </div>
-        </div>
-    
 </body></html>
