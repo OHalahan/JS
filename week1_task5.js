@@ -1,7 +1,7 @@
 function genCombinations() {
     var string = document.getElementById("string").value;
-    function recursive_call(active, rest, arr) {
-        if (!active && !rest)
+    function recursive_call( active, rest, arr ) {
+        if ( !active && !rest )
             return undefined;
         if (!rest) {
             arr.push(active);
@@ -12,5 +12,6 @@ function genCombinations() {
         }
         return arr;
     }
-    document.getElementById("out5").innerHTML = recursive_call("", string, []);
+    document.getElementById("out5").innerHTML = recursive_call( "", string, [] );
+    return true;
 }

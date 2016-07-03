@@ -1,4 +1,4 @@
-function getFunction(anotherFunc) {
+function callFunction(anotherFunc) {
     anotherFunc();
     return true;
 }
