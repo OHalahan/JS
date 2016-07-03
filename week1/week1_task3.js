@@ -5,7 +5,6 @@ function getValues() {
 function multiply() {
     var numbers = getValues();
     document.getElementById("out3").innerHTML = ( numbers[0] * numbers[1] );
-    return true;
 }
 
 function divide() {
@@ -16,5 +15,4 @@ function divide() {
     else {
         document.getElementById("out3").innerHTML = ( numbers[0] / numbers[1] );
     }
-    return true;
 }

@@ -1,6 +1,5 @@
 function callFunction(anotherFunc) {
     anotherFunc();
-    return true;
 }
 
 function testConsole() {

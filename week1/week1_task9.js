@@ -9,5 +9,4 @@ function randomInterval() {
     }
 
     document.getElementById("out9").innerHTML =  Math.floor( Math.random() * ( max - min + 1 ) ) + Number(min);
-    return true;
 }

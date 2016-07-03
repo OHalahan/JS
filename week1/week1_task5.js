@@ -13,5 +13,4 @@ function genCombinations() {
         return arr;
     }
     document.getElementById("out5").innerHTML = recursive_call( "", string, [] );
-    return true;
 }

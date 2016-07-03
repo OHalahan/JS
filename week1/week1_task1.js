@@ -6,5 +6,4 @@ function returnConverted(){
     else {
         document.getElementById("out1").innerHTML = temp + "F is " + ( ( ( temp - 32 ) / 9 ) * 5 ) + "C";
     }
-    return true;
 }
