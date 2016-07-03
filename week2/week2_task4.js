@@ -1,12 +1,16 @@
-function vCount() {
-    var string = document.getElementById("vString").value.toLowerCase();
-    var vList = 'aeiou';
-    var count = 0;
+document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+document.getElementById("hTrigger").addEventListener("mouseout", goBlack);
 
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
-            count++;
-        }
+var bold = document.getElementById("highlightHere").getElementsByTagName("b");
+
+function highlight() {
+    for (var i = 0; i < bold.length; i++) {
+        bold[i].style.color = "#1976D2";
     }
-    document.getElementById("out7").innerHTML = count;
+}
+
+function goBlack() {
+    for (var i = 0; i < bold.length; i++) {
+        bold[i].style.color = "black";
+    }
 }

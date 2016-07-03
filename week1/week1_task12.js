@@ -1,3 +1,5 @@
+document.getElementById("separateNum").addEventListener("click", separate);
+
 function separate() {
     var solid = document.getElementById("solid").value;
     var groups = solid.toString().split(".");

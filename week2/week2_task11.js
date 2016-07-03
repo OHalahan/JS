@@ -1,3 +1,5 @@
+document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+
 function vCount() {
     var string = document.getElementById("vString").value.toLowerCase();
     var vList = 'aeiou';

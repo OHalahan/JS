@@ -121,12 +121,8 @@
                     <p>Write a JavaScript program to display a random image (clicking on a button) from the following list.</p>
                 </div>
                 <div class="task_example">
-                    <p class="note">
-                        Sample Image information:</p><p>
-                        "http://farm4.staticflickr.com/3691/11268502654_f28f05966c_m.jpg", width: "240", height: "160"<br>
-                        "http://farm1.staticflickr.com/33/45336904_1aef569b30_n.jpg", width: "320", height: "195"<br>
-                        "http://farm6.staticflickr.com/5211/5384592886_80a512e2c9.jpg", width: "500", height: "343"
-                    </p>
+                    <p><button id="randImgBtn">Append image</button></p>
+                    <p class="note" id="out3"></p>
                 </div>
             </div>
         </div>
@@ -139,9 +135,11 @@
             <div class="body">
                 <div class="task_body">
                     <p>Write a JavaScript program to highlight the bold words of the following paragraph, on mouse over a certain link.</p>
-                    <p class="note">Sample link and text:</p>
-                    JavaScript is a <b>high-level</b>, <b>dynamic</b>, <b>untyped</b>, and <b>interpreted</b> programming language. It has been standardized in the <b>ECMAScript</b> language specification.
-                    Alongside <b>HTML</b> and <b>CSS</b>, it is one of the three core technologies of <b>World Wide Web</b> content production.
+                    <p class="note" ><a href="#" id="hTrigger">Move mouse here to highligh bold text below</a></p>
+                    <p id="highlightHere">
+                        JavaScript is a <b>high-level</b>, <b>dynamic</b>, <b>untyped</b>, and <b>interpreted</b> programming language. It has been standardized in the <b>ECMAScript</b> language specification.
+                        Alongside <b>HTML</b> and <b>CSS</b>, it is one of the three core technologies of <b>World Wide Web</b> content production.
+                    </p>
                 </div>
             </div>
         </div>
@@ -294,10 +292,5 @@
         <script src="week2_task10.js"></script>
         <script src="week2_task11.js"></script>
         <script src="week2_task12.js"></script>
-
-        <!-- HANDLERS -->
-        <script> document.getElementById("changeStyleBtn").onclick = changeStyle </script>
-        <script> document.getElementById("removeItemBtn").onclick = removeItem </script>
-        <script> document.getElementById("randImgBtn").onclick = randImg </script>
 
 </body></html>
