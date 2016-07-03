@@ -1,14 +1,19 @@
-document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+document.getElementById("makeCallBtn").addEventListener("click", makeCall);
 
-function vCount() {
-    var string = document.getElementById("vString").value.toLowerCase();
-    var vList = 'aeiou';
-    var count = 0;
-
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
-            count++;
-        }
+var call = new XMLHttpRequest();
+call.onreadystatechange = function(){
+    if( this.readyState === 4 && this.status === 200 ) {
+        var data = JSON.parse(this.response);
+        logMessage(data.school);
     }
-    document.getElementById("out7").innerHTML = count;
+}
+call.addEventListener( "readystatechange", call.onreadystatechange );
+
+function logMessage(msg) {
+    document.getElementById("out12").innerHTML = msg + "<br>";
+}
+
+function makeCall() {
+    call.open("GET", "http://courses.dce.harvard.edu/~cscie3/ajax.php");
+    call.send();
 }
