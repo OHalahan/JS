@@ -1,3 +1,6 @@
+document.getElementById("multiply").addEventListener("click", multiply);
+document.getElementById("divide").addEventListener("click", divide);
+
 function getValues() {
     return [ document.getElementById("first").value, document.getElementById("second").value ];
 }

@@ -1,3 +1,5 @@
+document.getElementById("conv").addEventListener("click", returnConverted);
+
 function returnConverted(){
     var temp = document.getElementById("temp").value;
     if ( document.getElementById("scaleC").checked ) {

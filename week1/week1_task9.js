@@ -1,3 +1,5 @@
+document.getElementById("genRand").addEventListener("click", randomInterval);
+
 function randomInterval() {
     var min = document.getElementById("min").value;
     var max = document.getElementById("max").value;

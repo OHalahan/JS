@@ -1,3 +1,5 @@
+document.getElementById("vowels").addEventListener("click", vCount);
+
 function vCount() {
     var string = document.getElementById("vString").value.toLowerCase();
     var vList = 'aeiou';

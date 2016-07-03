@@ -1,3 +1,5 @@
+document.getElementById("generate").addEventListener("click", genCombinations);
+
 function genCombinations() {
     var string = document.getElementById("string").value;
     function recursive_call( active, rest, arr ) {
