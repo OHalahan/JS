@@ -1,14 +1,13 @@
-document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+document.getElementById("objLnCallBtn").addEventListener("click", objLnCall);
 
-function vCount() {
-    var string = document.getElementById("vString").value.toLowerCase();
-    var vList = 'aeiou';
-    var count = 0;
+function objLnCall() {
+    document.getElementById("out8").innerHTML = "Length: " + objLn(student);
+}
 
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
-            count++;
-        }
+function objLn(obj) {
+    var arr = [];
+    for (var prop in obj) {
+        arr.push(prop);
     }
-    document.getElementById("out7").innerHTML = count;
+    return arr.length;
 }

@@ -1,14 +1,8 @@
-document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+window.addEventListener("resize", getSize);
+window.addEventListener("load", getSize);
 
-function vCount() {
-    var string = document.getElementById("vString").value.toLowerCase();
-    var vList = 'aeiou';
-    var count = 0;
-
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
-            count++;
-        }
-    }
-    document.getElementById("out7").innerHTML = count;
+function getSize() {
+    var width = document.documentElement.clientWidth;
+    var heigth  = document.documentElement.clientHeight;
+    document.getElementById("out5").innerHTML = "Heigth: " + heigth + " Width: " + width;
 }

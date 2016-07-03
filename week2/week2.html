@@ -153,6 +153,9 @@
                 <div class="task_body">
                     <p>Write a JavaScript program to get the width and height of the window (any time the window is resized).</p>
                 </div>
+                <div class="task_example">
+                    <p class="note" id="out5" ></p>
+                </div>
             </div>
         </div>
 
@@ -166,14 +169,8 @@
                     <p>Write a JavaScript program to list the properties of a JavaScript object</p>
                 </div>
                 <div class="task_example">
-                    <p class="note">Sample object:</p><p>
-                        var student = {<br>
-                        name : "David Rayy",<br>
-                        sclass : "VI",<br>
-                        rollno : 12 };<br>
-                    </p><p class="note">
-                        Sample Output: name,sclass,rollno
-                    </p>
+                    <p><button id="callPrintBtn">Print properties</button></p>
+                    <p class="note" id="out6"></p>
                 </div>
             </div>
         </div>
@@ -187,6 +184,11 @@
                 <div class="task_body">
                     <p>Write a JavaScript program to delete the <i>rollno</i> property from the previous task object. Also print the object before or after deleting the property.</p>
                 </div>
+                <div class="task_example">
+                    <p id="out71"></p>
+                    <p><button id="callDelBtn">Delete rollno</button></p>
+                    <p class="note" id="out72"></p>
+                </div>
             </div>
         </div>
 
@@ -198,6 +200,10 @@
             <div class="body">
                 <div class="task_body">
                     <p>Write a JavaScript program to get the length of a JavaScript object.</p>
+                </div>
+                <div class="task_example">
+                    <p><button id="objLnCallBtn">Show length</button></p>
+                    <p class="note" id="out8"></p>
                 </div>
             </div>
         </div>
@@ -228,7 +234,9 @@
                         author: 'Suzanne Collins',<br>
                         title:  'Mockingjay: The Final Book of The Hunger Games',<br>
                         readingStatus: false<br>
-                    }];
+                    }];<br>
+                    <p><button id="callListBtn">Show books</button></p>
+                    <p class="note" id="out9"></p>
                 </div>
             </div>
         </div>
@@ -256,7 +264,8 @@
                     <p>Write a JavaScript function to convert an object into a list of `[key, value]` pairs</p>
                 </div>
                 <div class="task_example">
-                    <p class="note"></p>
+                    <p>Convert "student" object from task 6: <button id="convertCallBtn">Convert</button></p>
+                    <p class="note" id="out11"></p>
                 </div>
             </div>
         </div>
@@ -292,5 +301,4 @@
         <script src="week2_task10.js"></script>
         <script src="week2_task11.js"></script>
         <script src="week2_task12.js"></script>
-
 </body></html>

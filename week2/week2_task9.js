@@ -1,14 +1,36 @@
-document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+document.getElementById("callListBtn").addEventListener("click", callList);
+var library = [
+    {
+        author: 'Bill Gates',
+        title: 'The Road Ahead',
+        readingStatus: true
+    },
+    {
+        author: 'Steve Jobs',
+        title: 'Walter Isaacson',
+        readingStatus: true
+    },
+    {
+        author: 'Suzanne Collins',
+        title: 'Mockingjay: The Final Book of The Hunger Games',
+        readingStatus: false
+    }];
 
-function vCount() {
-    var string = document.getElementById("vString").value.toLowerCase();
-    var vList = 'aeiou';
-    var count = 0;
+function callList() {
+    document.getElementById("out9").innerHTML = list(library);
+}
 
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
-            count++;
+function list(arr) {
+    var full = [];
+    for (var i = 0; i < arr.length; i++) {
+        var status = '';
+        if (arr[i]["readingStatus"]) {
+            status = "was read.";
         }
+        else {
+            status = "was not read.\n";
+        }
+        full.push("Title: " + arr[i]["title"] + "; Author: " + arr[i]["author"] + "; Status: " + status);
     }
-    document.getElementById("out7").innerHTML = count;
+    return full = full.toString().split(',').join("<br />");
 }

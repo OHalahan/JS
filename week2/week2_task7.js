@@ -1,14 +1,16 @@
-document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+document.getElementById("callDelBtn").addEventListener("click", callDel);
+document.getElementById("out71").innerHTML = "Before: " + listObj(student);
 
-function vCount() {
-    var string = document.getElementById("vString").value.toLowerCase();
-    var vList = 'aeiou';
-    var count = 0;
+function callDel() {
+    delProp(student, "rollno");
+    document.getElementById("out72").innerHTML = "After: " + listObj(student);
+}
 
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
-            count++;
-        }
+function delProp(obj, prop) {
+    if (obj[prop]) {
+        delete obj[prop];
     }
-    document.getElementById("out7").innerHTML = count;
+    else {
+        console.log("No such property");
+    }
 }

@@ -1,14 +1,10 @@
-document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+document.getElementById("convertCallBtn").addEventListener("mouseover", convertCall);
 
-function vCount() {
-    var string = document.getElementById("vString").value.toLowerCase();
-    var vList = 'aeiou';
-    var count = 0;
+function convertCall() {
 
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
-            count++;
-        }
-    }
-    document.getElementById("out7").innerHTML = count;
+    document.getElementById("out7").innerHTML = convert;
+}
+
+function convert() {
+
 }
