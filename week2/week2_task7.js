@@ -9,8 +9,7 @@ function callDel() {
 function delProp(obj, prop) {
     if (obj[prop]) {
         delete obj[prop];
-    }
-    else {
+    } else {
         console.log("No such property");
     }
 }

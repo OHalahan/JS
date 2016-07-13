@@ -7,7 +7,7 @@ function convertCall() {
 function convert(obj) {
     var pairs = [];
     for (var prop in obj) {
-        pairs.push("[" + prop + ", " + obj[prop] + "]" );
+        pairs.push("[" + prop + ", " + obj[prop] + "]");
     }
     return pairs;
 }

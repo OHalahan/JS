@@ -1,9 +1,9 @@
 document.getElementById("callPrintBtn").addEventListener("click", callPrint);
 
 var student = {
-    name : "David Rayy",
-    sclass : "VI",
-    rollno : 12
+    name: "David Rayy",
+    sclass: "VI",
+    rollno: 12
 };
 
 function callPrint() {

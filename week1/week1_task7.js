@@ -5,8 +5,8 @@ function vCount() {
     var vList = 'aeiou';
     var count = 0;
 
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
+    for (var i = 0; i < string.length; i++) {
+        if (vList.indexOf(string[i]) !== -1) {
             count++;
         }
     }

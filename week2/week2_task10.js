@@ -1,14 +1,23 @@
-document.getElementById("hTrigger").addEventListener("mouseover", highlight);
+document.getElementById("sortingBtn").addEventListener("click", callSorting);
 
-function vCount() {
-    var string = document.getElementById("vString").value.toLowerCase();
-    var vList = 'aeiou';
-    var count = 0;
+function callSorting() {
+    var orderBy = document.getElementById("orderBy").value;
+    sortObj(orderBy);
+}
 
-    for ( var i = 0; i < string.length; i++ ) {
-        if ( vList.indexOf(string[i]) !== -1 ) {
-            count++;
+function sortObj(strategy) {
+
+    function sortByStrategy(x, y) {
+        if (x[strategy] < y[strategy]) {
+            return -1;
+        }
+        if (x[strategy] > y[strategy]) {
+            return 1;
+        } else {
+            return 0;
         }
     }
-    document.getElementById("out7").innerHTML = count;
+
+    document.getElementById("out10").innerHTML = list(library.sort(sortByStrategy));
+
 }
