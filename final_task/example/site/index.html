@@ -43,7 +43,7 @@
                     }
                 }
 
-                xhr.send();
+                xhr.send(JSON.stringify({call: 'new'}));
             }
 
             function onFormSubmit(form) {

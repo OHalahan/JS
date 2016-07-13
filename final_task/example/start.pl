@@ -49,6 +49,12 @@ any [qw(GET POST)] => '/api' => sub {
 any [qw(GET POST)] => '/api/get_server_localtime' => sub {
     my $self = shift;
 
+    my $body = decode_json( $self->req->body || "{}" );
+
+    print "Content Received:\n";
+    print Dumper $body;
+    print $body->{call} . "\n";
+
     $self->render(
         json => {
             success   => 1,
