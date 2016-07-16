@@ -40,27 +40,35 @@ sub load_database {
         print "Note! previous changes will be lost\n\n";
         print "> Your decision (Y/N): ";
         chomp( my $decision = <STDIN> );
-        while ( $decision !~ /^(y|Y|n|N)$/ ) {
+        while ( $decision !~ /^(y|n)$/i ) {
             print "\n> Choose Y or N: ";
             chomp( $decision = <STDIN> );
         }
-        if ( $decision =~ 'y|Y' ) {
+        if ( $decision =~ /y/i ) {
             $book_db = Database->new();
         }
-        elsif ( $decision =~ 'n|N' ) {
+        elsif ( $decision =~ /n/i ) {
             print "\nOK. New file will append to existing database\n";
         }
     }
 
-    $book_db->load_db($file);
-    if ($EVAL_ERROR) {
-        print "\n$EVAL_ERROR\n";
-    }
-    else {
+    if ( $book_db->load_db($file) ) {
         print "\nDone. Loaded file $file. " . scalar ( keys %{$book_db->get_books} ) . " book(s) in total\n";
         return $book_db;
     }
-    return;
+    else {
+        return undef;
+    }
+}
+
+sub validate_field {
+    my ( $f_name ) = @_;
+    chomp( my $choise = <STDIN> );
+    while ( $choise =~ /^\s+$/ || !$choise ) {
+        print "\n> $f_name cannot be empty: ";
+        chomp( $choise = <STDIN> );
+    }
+    return $choise || undef;
 }
 
 sub add_book {
@@ -70,14 +78,14 @@ sub add_book {
     }
     my ( $title, $author, $section, $shelf, $taken ) = ( '', '', '', '', '' );
     print "\n\n> Enter the book title: ";
-    chomp( $title = <STDIN> );
+    $title = validate_field('Title');
     print "> Enter the book's author: ";
-    chomp( $author = <STDIN> );
+    $author = validate_field('Author');
     print "> Enter a section: ";
-    chomp( $section = <STDIN> );
+    $section = validate_field('Section');
     print "> Enter a shelf: ";
-    chomp( $shelf = <STDIN> );
-    print "> Enter name of the reader: ";
+    $shelf = validate_field('Shelf');;
+    print "> Enter name of the reader if any: ";
     chomp( $taken = <STDIN> );
     $book_db->add_book( title => $title, author => $author, section => $section, shelf => $shelf, taken => $taken );
     print "Book has been added to the database\n".  scalar ( keys %{$book_db->get_books} ) ." book(s) in total\n";
@@ -134,7 +142,7 @@ sub parse_pattern {
             }
         }
     }
-    @matched ? return @matched : return;
+    @matched ? return @matched : return undef;
 }
 
 sub merge_results {
@@ -150,15 +158,17 @@ sub merge_results {
             push @result, $elem;
         }
     }
-    @result ? return @result : return;
+    @result ? return @result : return undef;
 }
 
 sub search_book {
-    my ( $book_db, $row, $pattern, $strategy, @matched, @passed, @total )  = ( @_, '', '', (), (), () );
+    my ( $book_db, $row )  = ( @_ );
+    my ( $pattern, $strategy, @matched, @passed, @total ) = ( '', '', (), (), () );
     $row ? ( @passed = parse_pattern($row) ) : ( @passed = get_pattern );
 
     if (@passed) {
         ( $strategy, $pattern ) = @{ shift @passed };
+        $pattern =~ s/\*/\.*/;
         my @first_found = $book_db->search_book( $strategy, $pattern );
         #other patterns? perform search within books which were found at first iteration
         #in order not to check whole book database again
@@ -189,27 +199,24 @@ sub save_books {
 
     print "\n> Would you like to save changes? (Y/N): ";
     chomp( my $decision = <STDIN> );
-    while ( $decision !~ /^(y|Y|n|N)$/ ) {
+    while ( $decision !~ /^(y|n)$/i ) {
         print "\n> Choose Y or N: ";
         chomp( $decision = <STDIN> );
     }
-    if ( $decision =~ 'y|Y' ) {
+    if ( $decision =~ /y/i ) {
         if ( !$file ) {
             print "> Enter path to the file for saving: ";
             chomp( $file = <STDIN> );
         }
-        $book_db->save_db($file);
-        if ($EVAL_ERROR) {
-            print "$EVAL_ERROR\n";
-        }
-        else {
+        if ($book_db->save_db($file)) {
             print "\nBooks saved!\n\n";
+            return 1;
         }
     }
-    elsif ( $decision =~ 'n|N' ) {
+    elsif ( $decision =~ /n/i  ) {
         print "\nOK. Returning to main menu\n";
     }
-    return;
+    return undef;
 }
 
 sub delete_book {
@@ -218,29 +225,33 @@ sub delete_book {
     if (@books_to_delete) {
         my $decision = '';
         for my $book ( sort { $a <=> $b } @books_to_delete ) {
-            if ( $decision !~ /a|A/ ) {
+            if ( $decision !~ /a/i ) {
                 print "====\n";
                 print_book( $book_db, $book );
-                print "> Delete this book?\nChoose (Y)es, (N)o or (A)ll: ";
+                print "> Delete this book?\nChoose (Y)es, (N)o, (C)ancel or (A)ll: ";
                 chomp( $decision = <STDIN> );
-                while ( $decision !~ /^(y|Y|n|N|a|A)$/ ) {
-                    print "\n> Choose Y, N or A: ";
+                while ( $decision !~ /^(y|n|a|c)$/i ) {
+                    print "\n> Choose Y, N, C or A:";
                     chomp( $decision = <STDIN> );
                 }
-                if ( $decision =~ 'n|N' ) {
+                if ( $decision =~ /n/i ) {
                     print "\nSkipping this one\n";
                     next;
+                }
+                elsif ( $decision =~ /c/i ) {
+                    return undef;
                 }
             }
             $book_db->delete_book($book);
         }
         print "\nMatched books were processed. " . scalar ( keys %{$book_db->get_books} ) . " books left\n";
         save_books($book_db);
+        return 1;
     }
     else {
         print "Nothing to delete\n";
     }
-    return;
+    return undef;
 }
 
 my $database_obj = undef;

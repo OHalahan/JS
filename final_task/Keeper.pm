@@ -11,6 +11,10 @@ sub new {
     return $self;
 }
 
+sub add_book {
+    return new(@_);
+}
+
 our $AUTOLOAD;
 
 sub AUTOLOAD {

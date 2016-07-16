@@ -2,6 +2,7 @@
 
 use strict;
 use warnings;
+use Database;
 
 use Time::HiRes qw(gettimeofday);
 use Mojolicious::Lite;
@@ -15,45 +16,75 @@ any '/' => sub {
     $_[0]->reply->static('index.html')
 };
 
-any [qw(GET POST)] => '/api' => sub {
+###load Database
+my $file = 'books.txt';
+my $book_db = Database->new();
+if ( $book_db->load_db($file) ) {
+    print "\nLoaded file $file. " . scalar ( keys %{$book_db->get_books} ) . " book(s) in total\n\n";
+}
+###
+
+any [qw(GET POST)] => '/api/is_db' => sub {
     my $self = shift;
-
     my $body = decode_json( $self->req->body || "{}" );
+    my $result = 0;
 
-    print "Content Received:\n";
-    print Dumper $body;
-
-    $self->res->headers->cache_control('no-cache');
-    $self->res->headers->access_control_allow_origin('*');
-
-    if ( ( $body->{method} || '' ) eq 'get_owner_info' ) {
-        # Do some backend magic for 'get_owner_info' method
-        # ...
-        # And respond success if it was successful
-        $self->render(
-            json => {
-                success => 1,
-            }
-        );
+    if ( $book_db ) {
+        $result = 1;
     }
 
-    # No method found
     $self->render(
         json => {
-            success => 0,
+            success   => $result,
         }
     );
 };
 
-# It's better when each 'destination' serves only one method
-any [qw(GET POST)] => '/api/get_server_localtime' => sub {
+any [qw(GET POST)] => '/api/save_db' => sub {
     my $self = shift;
+    my $body = decode_json( $self->req->body || "{}" );
+    my $result = 0;
 
+    if ( $book_db && $book_db->save_db($file) ) {
+        $result = 1;
+    }
+    $self->render(
+        json => {
+            success   => $result,
+        }
+    );
+};
+
+any [qw(GET POST)] => '/api/delete_books' => sub {
+    my $self = shift;
+    my $body = decode_json( $self->req->body || "{}" );
+    my @books = split( /\s/, $body->{books} );
+    my $result = 0;
+    #if DB exists delete books and save DB back to file
+    if ( $book_db ) {
+        for my $book (@books) {
+            $book_db->delete_book($book);
+        }
+        if ( $book_db->save_db($file) ) {
+            $result = 1;
+        }
+    }
+    $self->render(
+        json => {
+            success   => $result,
+        }
+    );
+};
+
+
+###
+any [qw(GET POST)] => '/api/load_db' => sub {
+    my $self = shift;
     my $body = decode_json( $self->req->body || "{}" );
 
     print "Content Received:\n";
     print Dumper $body;
-    print $body->{call} . "\n";
+    print Dumper $self;
 
     $self->render(
         json => {
@@ -62,6 +93,7 @@ any [qw(GET POST)] => '/api/get_server_localtime' => sub {
         }
     );
 };
+###
 
 my $port = $ENV{PORT} || 3000;
 app->start( 'daemon', '-l', "http://*:$port" );

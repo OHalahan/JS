@@ -50,14 +50,20 @@ sub load_db {
         }
         close $database;
     };
-    $EVAL_ERROR ? return $EVAL_ERROR : return $book_db;
+    if ($EVAL_ERROR) {
+        warn $EVAL_ERROR;
+        return undef;
+    }
+    else {
+        return $book_db;
+    }
 }
 
 sub add_book {
     my $book_db = shift;
     my $id      = increase_id;
-    $book_db->{books}{$id} = Keeper->new(@_);
-    return;
+    $book_db->{books}{$id} = Keeper->add_book(@_);
+    return $book_db->{books}{$id};
 }
 
 sub search_book {
@@ -67,6 +73,7 @@ sub search_book {
     if ( $pattern =~ s/^"([^"]+)"$/$1/ ) {
         $expression = qr/^$pattern$/;
     }
+
     else {
         $expression = qr/$pattern/;
     }
@@ -84,10 +91,10 @@ sub delete_book {
     my ( $book_db, $book ) = @_;
     if ( $book_db->{books}{$book} ) {
         delete $book_db->{books}{$book};
-        return;
+        return 1;
     }
     else {
-        return "No book with ID $book\n";
+        return undef;
     }
 }
 
@@ -97,16 +104,22 @@ sub save_db {
         open( my $fh, '>', $file ) or die "Cannot create a file $file: $OS_ERROR\n";
 
         for my $book ( sort { $a <=> $b } ( keys %{ $book_db->get_books } ) ) {
-            print $fh "\n";
-            print $fh "Title: " . $book_db->get_books->{$book}->get_title . "\n";
-            print $fh "Author: " . $book_db->get_books->{$book}->get_author . "\n";
-            print $fh "Section: " . $book_db->get_books->{$book}->get_section . "\n";
-            print $fh "Shelf: " . $book_db->get_books->{$book}->get_shelf . "\n";
-            print $fh "On Hands: " . $book_db->get_books->{$book}->get_taken . "\n";
-            print $fh "\n";
+            print {$fh} "\n";
+            print {$fh} "Title: " . $book_db->get_books->{$book}->get_title . "\n";
+            print {$fh} "Author: " . $book_db->get_books->{$book}->get_author . "\n";
+            print {$fh} "Section: " . $book_db->get_books->{$book}->get_section . "\n";
+            print {$fh} "Shelf: " . $book_db->get_books->{$book}->get_shelf . "\n";
+            print {$fh} "On Hands: " . $book_db->get_books->{$book}->get_taken . "\n";
+            print {$fh} "\n";
         }
     };
-    $EVAL_ERROR ? return $EVAL_ERROR : return;
+    if ($EVAL_ERROR) {
+        warn $EVAL_ERROR;
+        return undef;
+    }
+    else {
+        return 1;
+    }
 }
 
 our $AUTOLOAD;
