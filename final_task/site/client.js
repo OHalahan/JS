@@ -30,13 +30,21 @@ function createTableBody(books) {
     }
     var options = new Array("id", "title", "author", "section", "shelf", "taken");
     console.log(books);
-    //TABLE ROWS
+
     for (i = 0; i < books.length; i++) {
+
+        var chk = document.createElement('INPUT');
+        chk.type = "checkbox";
+        chk.id = books[i]["id"];
+
         var tr = document.createElement('TR');
-        //var book = new Array(ids[i], books[ids[i]]["title"], books[ids[i]]["author"], books[ids[i]]["section"], books[ids[i]]["shelf"], books[ids[i]]["taken"]);
-        for (j = 0; j < options.length; j++) {
+        for (j = -1; j < options.length; j++) {
             var td = document.createElement('TD');
-            td.appendChild(document.createTextNode(books[i][options[j]]));
+            if (j === -1) {
+                td.appendChild(chk);
+            } else {
+                td.appendChild(document.createTextNode(books[i][options[j]]));
+            }
             tr.appendChild(td);
         }
         tableBody.appendChild(tr);
@@ -54,13 +62,33 @@ function saveDb() {
             if (response.success) {
                 return response.success;
             }
+
         }
     }
 }
 
+function checkAll() {
+    var mainCheckbox = document.getElementById("checker");
+    var checkboxes = document.getElementsByTagName('INPUT');
+    if (mainCheckbox.checked) {
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].type == 'checkbox') {
+                checkboxes[i].checked = true;
+            }
+        }
+    } else {
+        for (var i = 0; i < checkboxes.length; i++) {
+            console.log(i)
+            if (checkboxes[i].type == 'checkbox') {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+}
 
-
-
+function deleteSelected () {
+    
+}
 
 
 /*
