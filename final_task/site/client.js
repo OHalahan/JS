@@ -7,40 +7,36 @@ function makeAjax(destination) {
     return xhr;
 }
 
-//should be called with a callback to synchronise output
+//should be called with a callback function to synchronise output
 function callBooks(callback) {
     var request = makeAjax('get_books');
     request.send();
     request.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            console.log(this.response); // See console to see response
+            //console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
-                delete response.success;
-                callback(response);
+                callback(response["books"]);
             }
         }
     }
 }
 
+//called via callbacks and fills the table based on the provided array of "books"
 function createTableBody(books) {
     var tableBody = document.getElementById("booksTable");
     while (tableBody.firstChild) {
         tableBody.removeChild(tableBody.firstChild);
     }
-    var ids = Object.keys(books);
-    console.log(ids);
-
+    var options = new Array("id", "title", "author", "section", "shelf", "taken");
+    console.log(books);
     //TABLE ROWS
-    for (i = 0; i < ids.length; i++) {
+    for (i = 0; i < books.length; i++) {
         var tr = document.createElement('TR');
-        var options = Object.keys(books[ids[i]]);
-
-        var book = new Array(ids[i], books[ids[i]]["title"], books[ids[i]]["author"], books[ids[i]]["section"], books[ids[i]]["shelf"], books[ids[i]]["taken"]);
-
-        for (j = 0; j < options.length+1; j++) {
+        //var book = new Array(ids[i], books[ids[i]]["title"], books[ids[i]]["author"], books[ids[i]]["section"], books[ids[i]]["shelf"], books[ids[i]]["taken"]);
+        for (j = 0; j < options.length; j++) {
             var td = document.createElement('TD');
-            td.appendChild(document.createTextNode(book[j]));
+            td.appendChild(document.createTextNode(books[i][options[j]]));
             tr.appendChild(td);
         }
         tableBody.appendChild(tr);

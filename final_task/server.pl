@@ -118,9 +118,9 @@ any [qw(GET POST)] => '/api/get_books' => sub {
     if ($book_db) {
         $final->{success} = 1;
 
-        for my $book ( keys $book_db->{books} ) {
-            $final->{$book} = {
-                "id" => $book;
+        for my $book ( keys %{$book_db->{books}} ) {
+            push @{$final->{books}}, {
+                "id" => $book,
                 "title" => $book_db->get_books->{$book}->get_title,
                 "author" => $book_db->get_books->{$book}->get_author,
                 "section" => $book_db->get_books->{$book}->get_section,
