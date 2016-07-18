@@ -27,15 +27,17 @@ if ( $book_db->load_db($file) ) {
 any [qw(GET POST)] => '/api/is_db' => sub {
     my $self = shift;
     my $body = decode_json( $self->req->body || "{}" );
-    my $result = 0;
+    my ( $result, @ids ) = ( 0, () );
 
     if ( $book_db ) {
         $result = 1;
+        @ids = keys %{$book_db->get_books};
     }
 
     $self->render(
         json => {
-            success   => $result,
+            success => $result,
+            ids     => "@ids",
         }
     );
 };
@@ -76,6 +78,64 @@ any [qw(GET POST)] => '/api/delete_books' => sub {
     );
 };
 
+any [qw(GET POST)] => '/api/get_by_id' => sub {
+    my $self = shift;
+    my $body = decode_json( $self->req->body || "{}" );
+    my $book = $body->{book};
+    my $result = 0;
+
+    print "Content Received:\n";
+    print Dumper $body;
+
+    if ($book_db) {
+        $result = 1;
+        $self->render(
+            json => {
+                success   => $result,
+                title => $book_db->get_books->{$book}->get_title,
+                author => $book_db->get_books->{$book}->get_author,
+                section => $book_db->get_books->{$book}->get_section,
+                shelf => $book_db->get_books->{$book}->get_shelf,
+                taken => $book_db->get_books->{$book}->get_taken,
+            }
+        );
+    }
+    else {
+        $self->render(
+            json => {
+                success   => $result,
+            }
+        );
+    }
+
+};
+
+any [qw(GET POST)] => '/api/get_books' => sub {
+    my $self = shift;
+    my $body = decode_json( $self->req->body || "{}" );
+    my $final = {};
+
+    if ($book_db) {
+        $final->{success} = 1;
+
+        for my $book ( keys $book_db->{books} ) {
+            $final->{$book} = {
+                "id" => $book;
+                "title" => $book_db->get_books->{$book}->get_title,
+                "author" => $book_db->get_books->{$book}->get_author,
+                "section" => $book_db->get_books->{$book}->get_section,
+                "shelf" => $book_db->get_books->{$book}->get_shelf,
+                "taken" => $book_db->get_books->{$book}->get_taken,
+            }
+        }
+    }
+    else {
+        $final->{success} = 0;
+    }
+    $self->render(
+        json => $final,
+    );
+};
 
 ###
 any [qw(GET POST)] => '/api/load_db' => sub {

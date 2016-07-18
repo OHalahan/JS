@@ -1,8 +1,10 @@
+
 Title: Ant: The Definitive Guide
 Author: Jesse Tilly, Eric Burke
 Section: Java
 Shelf: 1
 On Hands: 
+
 
 Title: Microsoft Word - apache3.doc
 Author: Eric Robert
@@ -241,9 +243,3 @@ Section: XML
 Shelf: 2
 On Hands: Oleg Petrenko
 
-
-Title: XSLT
-Author: Doug Tidwell
-Section: XML
-Shelf: 3
-On Hands: Oleg Petrenko
