@@ -60,20 +60,22 @@ any [qw(GET POST)] => '/api/save_db' => sub {
 any [qw(GET POST)] => '/api/delete_books' => sub {
     my $self = shift;
     my $body = decode_json( $self->req->body || "{}" );
-    my @books = split( /\s/, $body->{books} );
-    my $result = 0;
-    #if DB exists delete books and save DB back to file
+    my @books = ( @{$body->{books}} );
+    my ( $result, $failed ) = ( 1, () );
+
+    #if DB exists delete books
     if ( $book_db ) {
         for my $book (@books) {
-            $book_db->delete_book($book);
-        }
-        if ( $book_db->save_db($file) ) {
-            $result = 1;
+            if (!$book_db->delete_book($book)) {
+                push @{$failed}, $book;
+                my $result = 0;
+            }
         }
     }
     $self->render(
         json => {
             success   => $result,
+            failed => $failed,
         }
     );
 };

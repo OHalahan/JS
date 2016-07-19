@@ -51,7 +51,7 @@ function createTableBody(books) {
     }
 }
 
-function saveDb() {
+function saveDB() {
     var request = makeAjax('save_db');
     request.send();
     request.onreadystatechange = function() {
@@ -62,7 +62,6 @@ function saveDb() {
             if (response.success) {
                 return response.success;
             }
-
         }
     }
 }
@@ -78,7 +77,7 @@ function checkAll() {
         }
     } else {
         for (var i = 0; i < checkboxes.length; i++) {
-            console.log(i)
+            console.log(i);
             if (checkboxes[i].type == 'checkbox') {
                 checkboxes[i].checked = false;
             }
@@ -86,8 +85,54 @@ function checkAll() {
     }
 }
 
-function deleteSelected () {
-    
+//find selected rows and send a list to backend
+//call function to delete selected rows from table if success
+function deleteSelectedFromDB(callback) {
+
+    var table = document.getElementById("booksTable");;
+    var rowCount = table.rows.length;
+    var foundIDs = new Array();
+
+    for (var i = 0; i < rowCount; i++) {
+        var row = table.rows[i];
+        var chkbox = row.cells[0].childNodes[0];
+        if (chkbox.checked) {
+            foundIDs.push(chkbox["id"]);
+        }
+    }
+
+    console.log(foundIDs);
+
+    var request = makeAjax('delete_books');
+    request.send(JSON.stringify({books: foundIDs}));
+    request.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.response); // See console to see response
+            var response = JSON.parse(this.response || "{}");
+            if (response.success) {
+                console.log(response.failed);
+                callback();
+            }
+        }
+    }
+}
+
+//deletes rows directly from table
+//called via callback if backend confirms that selected rows were deleted
+function deleteSelectedFromTable() {
+
+    var table = document.getElementById("booksTable");
+    var rowCount = table.rows.length;
+
+    for (var i = 0; i < rowCount; i++) {
+        var row = table.rows[i];
+        var chkbox = row.cells[0].childNodes[0];
+        if (null != chkbox && true == chkbox.checked) {
+            table.deleteRow(i);
+            rowCount--;
+            i--;
+        }
+    }
 }
 
 
