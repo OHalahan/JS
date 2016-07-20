@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,53 +12,85 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="theme.css" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body role="document">
+<body role="document">
 
     <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
+        <div class="container">
+            <div class="navbar-header">
 
-          <a class="navbar-brand" href="#">Book storage</a>
+                <a class="navbar-brand" href="#">Book storage</a>
+            </div>
         </div>
-      </div>
     </nav>
 
     <div class="container theme-showcase" role="main">
 
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div >
-        <p><button type="button" class="btn btn-default">Get all books</button></p>
-      </div>
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+
+        <div class="col-md-12">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input type="text" class="form-control" id="author">
+                </div>
+                <div class="form-group">
+                    <label for="section">Section</label>
+                    <input type="text" class="form-control" id="section">
+                </div>
+            </form>
+        </div>
+    <br></br>
+        <div class="col-md-12">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="author">Shelf</label>
+                    <input type="number" class="form-control" id="shelf">
+                </div>
+                <div class="form-group">
+                    <label for="author">On Hands</label>
+                    <input type="text" class="form-control" id="taken">
+                </div>
+                <button type="button" class="btn btn-success" id="search">Filter</button>
+            </form>
+        </div>
+
 
         <div class="col-md-12" style="height: 80vh; overflow: auto;">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th><INPUT type="checkbox" id="checker" /> </th>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Section</th>
-                <th>Shelf</th>
-                <th>On Hands</th>
-              </tr>
-            </thead>
-            <tbody id="booksTable">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <INPUT type="checkbox" id="checker" /> </th>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Section</th>
+                        <th>Shelf</th>
+                        <th>On Hands</th>
+                    </tr>
+                </thead>
+                <tbody id="booksTable">
 
-            </tbody>
-          </table>
+                </tbody>
+            </table>
         </div>
-      </div>
+    </div>
 
 
-    </div> <!-- /container -->
+    </div>
+    <!-- /container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script src="client.js"></script>
     <script src="handlers.js"></script>
-  </body>
+</body>
+
 </html>

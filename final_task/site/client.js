@@ -22,6 +22,33 @@ function callBooks(callback) {
     }
 }
 
+//should be called with a callback function to synchronise output
+function searchBooks(callback) {
+    var request = makeAjax('search');
+    var groupped = [ ["title", ".*"] ];
+
+    var title
+    var author
+    var section
+    var shelf
+    var taken
+
+
+
+    request.send(JSON.stringify({
+        queries: groupped
+    }));
+    request.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            //console.log(this.response); // See console to see response
+            var response = JSON.parse(this.response || "{}");
+            if (response.success) {
+                callback(response["books"]);
+            }
+        }
+    }
+}
+
 //called via callbacks and fills the table based on the provided array of "books"
 function createTableBody(books) {
     var tableBody = document.getElementById("booksTable");
@@ -58,7 +85,6 @@ function saveDB() {
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
-
             if (response.success) {
                 return response.success;
             }
@@ -101,17 +127,21 @@ function deleteSelectedFromDB(callback) {
         }
     }
 
-    console.log(foundIDs);
+    console.log("Selected books: " + foundIDs);
 
     var request = makeAjax('delete_books');
-    request.send(JSON.stringify({books: foundIDs}));
+    request.send(JSON.stringify({
+        books: foundIDs
+    }));
     request.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
-                console.log(response.failed);
                 callback();
+            } else {
+                console.log("Failed to delete books: " + response.failed);
+                callBooks(createTableBody);
             }
         }
     }
@@ -127,7 +157,7 @@ function deleteSelectedFromTable() {
     for (var i = 0; i < rowCount; i++) {
         var row = table.rows[i];
         var chkbox = row.cells[0].childNodes[0];
-        if (null != chkbox && true == chkbox.checked) {
+        if (chkbox.checked) {
             table.deleteRow(i);
             rowCount--;
             i--;

@@ -42,6 +42,56 @@ any [qw(GET POST)] => '/api/is_db' => sub {
     );
 };
 
+any [qw(GET POST)] => '/api/search' => sub {
+    my $self = shift;
+    my $body = decode_json( $self->req->body || "{}" );
+    my $result = 1;
+    my @matched = ();
+    my @passed = @{$body->{queries}};
+    my $final = {};
+
+    if ($book_db) {
+        $final->{success} = 1;
+
+        my ( $strategy, $pattern ) = ( @{shift @passed} );
+        $pattern =~ s/\*/\.*/;
+        my @first_found = $book_db->search_book( $strategy, $pattern );
+        #other patterns? perform search within books which were found at first iteration
+        #in order not to check whole book database again
+        while (@passed) {
+            ( $strategy, $pattern ) = @{ shift @passed };
+            my @intermediate = $book_db->search_book( $strategy, $pattern, @first_found );
+            push @matched, ( [@intermediate] );
+        }
+        ( @matched > 1 ) ? @matched = merge_results( \@matched ) : ( @matched = @first_found );
+        if (@matched) {
+            for my $book ( @matched ) {
+                push @{$final->{books}}, {
+                    "id" => $book,
+                    "title" => $book_db->get_books->{$book}->get_title,
+                    "author" => $book_db->get_books->{$book}->get_author,
+                    "section" => $book_db->get_books->{$book}->get_section,
+                    "shelf" => $book_db->get_books->{$book}->get_shelf,
+                    "taken" => $book_db->get_books->{$book}->get_taken,
+                }
+            }
+            print "Found " . @matched . " book(s)\n";
+        }
+        else {
+            print "No books found using pattern: " . $strategy . "=" . $pattern . "\n";
+            $final->{success} = 0;
+        }
+
+    }
+    else {
+        $final->{success} = 0;
+    }
+
+    $self->render(
+        json => $final
+    );
+};
+
 any [qw(GET POST)] => '/api/save_db' => sub {
     my $self = shift;
     my $body = decode_json( $self->req->body || "{}" );
