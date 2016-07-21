@@ -25,6 +25,7 @@ function callBooks(callback) {
 function callbackSearchBooks() {
     searchBooks(createTableBody);
 }
+
 //should be called with a callback function to synchronise output
 function searchBooks(callback) {
     var request = makeAjax('search');
@@ -47,6 +48,9 @@ function searchBooks(callback) {
             if (response.success) {
                 callback(response["books"]);
             }
+            else {
+                callback([]);
+            }
         }
     }
 }
@@ -59,6 +63,8 @@ function createTableBody(books) {
     }
     var options = new Array("id", "title", "author", "section", "shelf", "taken");
     console.log(books);
+
+    ordering(books);
 
     for (i = 0; i < books.length; i++) {
 
@@ -78,6 +84,36 @@ function createTableBody(books) {
         }
         tableBody.appendChild(tr);
     }
+}
+
+function ordering(books) {
+    var options = new Array("id", "title", "author", "section", "shelf", "taken");
+    var strategy = options[document.getElementById("orderBy").selectedIndex];
+    console.log(strategy);
+
+    function sortByStrategy(x, y) {
+        var xInt = parseInt(x[strategy], 10) ,
+            yInt = parseInt(y[strategy], 10) ;
+
+        if (Number.isInteger(parseInt(x[strategy], 10))) {
+            xInt = parseInt(x[strategy], 10);
+            yInt = parseInt(y[strategy], 10);
+        } else {
+            xInt = x[strategy];
+            yInt = y[strategy];
+        }
+
+        if (xInt < yInt) {
+            return -1;
+        }
+        if (xInt > yInt) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    books.sort(sortByStrategy);
+
 }
 
 function saveDB() {
@@ -169,7 +205,6 @@ function deleteSelectedFromTable() {
         }
     }
 }
-
 
 /*
 function getServerLocalTime() {

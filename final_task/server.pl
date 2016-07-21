@@ -44,17 +44,20 @@ any [qw(GET POST)] => '/api/is_db' => sub {
 
 sub merge_results {
     my ($anon_arrays) = @_;
-    my ( @result, %count ) = ( () );
+    my %count = undef;
+    my @result = ();
     for my $array ( @{$anon_arrays} ) {
         for my $book ( @{$array} ) {
             $count{$book}++;
         }
     }
     for my $elem ( keys %count ) {
-        if ( $count{$elem} > 1 ) {
+        if ( $count{$elem} >= 4 ) {
             push @result, $elem;
+            print "Element: $count{$elem} - $elem\n";
         }
     }
+    print "Result @result\n";
     @result ? return @result : return undef;
 }
 
@@ -67,7 +70,6 @@ any [qw(GET POST)] => '/api/search' => sub {
     my $final = {};
 
     if ($book_db) {
-        $final->{success} = 1;
 
         my ( $strategy, $pattern ) = ( @{shift @passed} );
         $pattern =~ s/\*/\.*/;
@@ -79,7 +81,9 @@ any [qw(GET POST)] => '/api/search' => sub {
             my @intermediate = $book_db->search_book( $strategy, $pattern, @first_found );
             push @matched, ( [@intermediate] );
         }
-        ( @matched > 1 ) ? @matched = merge_results( \@matched ) : ( @matched = @first_found );
+        @matched = merge_results( \@matched );
+        print "Matched: @matched\n";
+        print "First_Found: @first_found\n";
         if (@matched) {
             for my $book ( @matched ) {
                 push @{$final->{books}}, {
@@ -92,12 +96,12 @@ any [qw(GET POST)] => '/api/search' => sub {
                 }
             }
             print "Found " . @matched . " book(s)\n";
+            $final->{success} = 1;
         }
         else {
             print "No books found using pattern: " . $strategy . "=" . $pattern . "\n";
             $final->{success} = 0;
         }
-
     }
     else {
         $final->{success} = 0;
@@ -145,83 +149,6 @@ any [qw(GET POST)] => '/api/delete_books' => sub {
         }
     );
 };
-
-any [qw(GET POST)] => '/api/get_by_id' => sub {
-    my $self = shift;
-    my $body = decode_json( $self->req->body || "{}" );
-    my $book = $body->{book};
-    my $result = 0;
-
-    print "Content Received:\n";
-    print Dumper $body;
-
-    if ($book_db) {
-        $result = 1;
-        $self->render(
-            json => {
-                success   => $result,
-                title => $book_db->get_books->{$book}->get_title,
-                author => $book_db->get_books->{$book}->get_author,
-                section => $book_db->get_books->{$book}->get_section,
-                shelf => $book_db->get_books->{$book}->get_shelf,
-                taken => $book_db->get_books->{$book}->get_taken,
-            }
-        );
-    }
-    else {
-        $self->render(
-            json => {
-                success   => $result,
-            }
-        );
-    }
-
-};
-
-any [qw(GET POST)] => '/api/get_books' => sub {
-    my $self = shift;
-    my $body = decode_json( $self->req->body || "{}" );
-    my $final = {};
-
-    if ($book_db) {
-        $final->{success} = 1;
-
-        for my $book ( keys %{$book_db->{books}} ) {
-            push @{$final->{books}}, {
-                "id" => $book,
-                "title" => $book_db->get_books->{$book}->get_title,
-                "author" => $book_db->get_books->{$book}->get_author,
-                "section" => $book_db->get_books->{$book}->get_section,
-                "shelf" => $book_db->get_books->{$book}->get_shelf,
-                "taken" => $book_db->get_books->{$book}->get_taken,
-            }
-        }
-    }
-    else {
-        $final->{success} = 0;
-    }
-    $self->render(
-        json => $final,
-    );
-};
-
-###
-any [qw(GET POST)] => '/api/load_db' => sub {
-    my $self = shift;
-    my $body = decode_json( $self->req->body || "{}" );
-
-    print "Content Received:\n";
-    print Dumper $body;
-    print Dumper $self;
-
-    $self->render(
-        json => {
-            success   => 1,
-            localtime => int(gettimeofday),
-        }
-    );
-};
-###
 
 my $port = $ENV{PORT} || 3000;
 app->start( 'daemon', '-l', "http://*:$port" );

@@ -58,10 +58,12 @@
             </div>
             <div class="pull-right">
                 <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#newBookModal">Add Book</button>
-                <br></br>
             </div>
         </div>
 
+        <div class="col-md-12">
+            <hr>
+        </div>
 
 
         <div class="col-md-12" style="height: 60vh; overflow: auto;">
@@ -84,28 +86,31 @@
             </table>
         </div>
 
+
+        <div class="col-md-12">
+            <hr>
+        </div>
+
         <div class="row">
 
             <div class="pull-left">
-                <br></br>
-                <div class="btn-group dropdown">
-                    <button type="button" class="btn btn-primary">Order By</button>
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <select id="colorSelect">
-                            <option>Red</option>
-                            <option>Green</option>
-                            <option>White</option>
-                            <option>Black</option>
-                        </select>
-                    </ul>
-                </div>
+                <div class="form-group">
 
+                    <strong class="col-sm-5">Order By</strong>
+                    <div class="col-sm-7">
+                        <select class="form-control" id="orderBy">
+                            <option>ID</option>
+                            <option>Title</option>
+                            <option>Author</option>
+                            <option>Section</option>
+                            <option>Shelf</option>
+                            <option>On Hands</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+
             <div class="pull-right">
-                <br></br>
                 <button type="button" class="btn btn-success" id="save">Save Changes</button>
             </div>
         </div>
