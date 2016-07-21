@@ -22,18 +22,20 @@ function callBooks(callback) {
     }
 }
 
+function callbackSearchBooks() {
+    searchBooks(createTableBody);
+}
 //should be called with a callback function to synchronise output
 function searchBooks(callback) {
     var request = makeAjax('search');
-    var groupped = [ ["title", ".*"] ];
 
-    var title
-    var author
-    var section
-    var shelf
-    var taken
+    var title = (document.getElementById("title").value || ".*");
+    var author = (document.getElementById("author").value || ".*");
+    var section = (document.getElementById("section").value || ".*");
+    var shelf = (document.getElementById("shelf").value || ".*");
+    var taken = (document.getElementById("taken").value || ".*");
 
-
+    var groupped = new Array(["title", title], ["author", author], ["section", section], ["shelf", shelf], ["taken", taken]);
 
     request.send(JSON.stringify({
         queries: groupped
@@ -113,6 +115,9 @@ function checkAll() {
 
 //find selected rows and send a list to backend
 //call function to delete selected rows from table if success
+function callbackDeleteSelectedFromDB() {
+    deleteSelectedFromDB(deleteSelectedFromTable);
+}
 function deleteSelectedFromDB(callback) {
 
     var table = document.getElementById("booksTable");;

@@ -42,6 +42,22 @@ any [qw(GET POST)] => '/api/is_db' => sub {
     );
 };
 
+sub merge_results {
+    my ($anon_arrays) = @_;
+    my ( @result, %count ) = ( () );
+    for my $array ( @{$anon_arrays} ) {
+        for my $book ( @{$array} ) {
+            $count{$book}++;
+        }
+    }
+    for my $elem ( keys %count ) {
+        if ( $count{$elem} > 1 ) {
+            push @result, $elem;
+        }
+    }
+    @result ? return @result : return undef;
+}
+
 any [qw(GET POST)] => '/api/search' => sub {
     my $self = shift;
     my $body = decode_json( $self->req->body || "{}" );
