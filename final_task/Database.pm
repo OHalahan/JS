@@ -73,7 +73,6 @@ sub search_book {
     if ( $pattern =~ s/^"([^"]+)"$/$1/ ) {
         $expression = qr/^$pattern$/;
     }
-
     else {
         $expression = qr/$pattern/;
     }

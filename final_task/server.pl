@@ -44,7 +44,7 @@ any [qw(GET POST)] => '/api/is_db' => sub {
 
 sub merge_results {
     my ($anon_arrays) = @_;
-    my %count = undef;
+    my %count = ();
     my @result = ();
     for my $array ( @{$anon_arrays} ) {
         for my $book ( @{$array} ) {
@@ -54,61 +54,89 @@ sub merge_results {
     for my $elem ( keys %count ) {
         if ( $count{$elem} >= 4 ) {
             push @result, $elem;
-            print "Element: $count{$elem} - $elem\n";
         }
     }
-    print "Result @result\n";
     @result ? return @result : return undef;
 }
 
 any [qw(GET POST)] => '/api/search' => sub {
     my $self = shift;
     my $body = decode_json( $self->req->body || "{}" );
+    my @passed = @{$body->{queries}};
+
     my $result = 1;
     my @matched = ();
-    my @passed = @{$body->{queries}};
     my $final = {};
 
     if ($book_db) {
-
+        $final->{success} = 0;
+        
         my ( $strategy, $pattern ) = ( @{shift @passed} );
         $pattern =~ s/\*/\.*/;
         my @first_found = $book_db->search_book( $strategy, $pattern );
-        #other patterns? perform search within books which were found at first iteration
-        #in order not to check whole book database again
-        while (@passed) {
-            ( $strategy, $pattern ) = @{ shift @passed };
-            my @intermediate = $book_db->search_book( $strategy, $pattern, @first_found );
-            push @matched, ( [@intermediate] );
-        }
-        @matched = merge_results( \@matched );
-        print "Matched: @matched\n";
-        print "First_Found: @first_found\n";
-        if (@matched) {
-            for my $book ( @matched ) {
-                push @{$final->{books}}, {
-                    "id" => $book,
-                    "title" => $book_db->get_books->{$book}->get_title,
-                    "author" => $book_db->get_books->{$book}->get_author,
-                    "section" => $book_db->get_books->{$book}->get_section,
-                    "shelf" => $book_db->get_books->{$book}->get_shelf,
-                    "taken" => $book_db->get_books->{$book}->get_taken,
+        if (@first_found) {
+            #perform search within books which were found at first iteration
+            #in order not to check whole book database again
+            while (@passed) {
+                ( $strategy, $pattern ) = @{ shift @passed };
+                my @intermediate = $book_db->search_book( $strategy, $pattern, @first_found );
+                if (!@intermediate) {
+                    $final->{success} = 0;
+                    @matched = ();
+                    last;
+                }
+                else {
+                    push @matched, ( [@intermediate] );
                 }
             }
-            print "Found " . @matched . " book(s)\n";
-            $final->{success} = 1;
-        }
-        else {
-            print "No books found using pattern: " . $strategy . "=" . $pattern . "\n";
-            $final->{success} = 0;
+            if (@matched) {
+                @matched = merge_results( \@matched );
+                for my $book ( @matched ) {
+                    push @{$final->{books}}, {
+                        "id" => $book,
+                        "title" => $book_db->get_books->{$book}->get_title,
+                        "author" => $book_db->get_books->{$book}->get_author,
+                        "section" => $book_db->get_books->{$book}->get_section,
+                        "shelf" => $book_db->get_books->{$book}->get_shelf,
+                        "taken" => $book_db->get_books->{$book}->get_taken,
+                    }
+                }
+                $final->{success} = 1;
+            }
         }
     }
-    else {
-        $final->{success} = 0;
+    $self->render(
+        json => $final
+    );
+};
+
+any [qw(GET POST)] => '/api/add' => sub {
+    my $self = shift;
+    my $body = decode_json( $self->req->body || "{}" );
+    my ( $title, $author, $section, $shelf, $taken ) = ( '', '', '', '', '' );
+    my ( $result, $counter ) = ( 0, 0 );
+
+    $title = $body->{title};
+    $author = $body->{author};
+    $section = $body->{section};
+    $shelf = $body->{shelf};
+    $taken = $body->{taken};
+
+    #check whether all mandatory fields are present
+    for my $option ( $title, $author, $section, $shelf ) {
+        if ( $option !~ /^\s+$/ && $option ) {
+            $counter++;
+        }
+    }
+
+    if ( $counter == 4 && $book_db && $book_db->add_book( title => $title, author => $author, section => $section, shelf => $shelf, taken => $taken ) ) {
+            $result = 1;
     }
 
     $self->render(
-        json => $final
+        json => {
+            success   => $result,
+        }
     );
 };
 

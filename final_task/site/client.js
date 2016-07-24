@@ -7,21 +7,6 @@ function makeAjax(destination) {
     return xhr;
 }
 
-//should be called with a callback function to synchronise output
-function callBooks(callback) {
-    var request = makeAjax('get_books');
-    request.send();
-    request.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            //console.log(this.response); // See console to see response
-            var response = JSON.parse(this.response || "{}");
-            if (response.success) {
-                callback(response["books"]);
-            }
-        }
-    }
-}
-
 function callbackSearchBooks() {
     searchBooks(createTableBody);
 }
@@ -55,16 +40,46 @@ function searchBooks(callback) {
     }
 }
 
+function ordering(books) {
+
+    var options = new Array("id", "title", "author", "section", "shelf", "taken");
+    var strategy = options[document.getElementById("orderBy").selectedIndex];
+
+    function sortByStrategy(x, y) {
+        var xVal = parseInt(x[strategy], 10) ,
+            yVal = parseInt(y[strategy], 10) ;
+
+        if (Number.isInteger(parseInt(x[strategy], 10))) {
+            xVal = parseInt(x[strategy], 10);
+            yVal = parseInt(y[strategy], 10);
+        } else {
+            xVal = x[strategy];
+            yVal = y[strategy];
+        }
+
+        if (xVal < yVal) {
+            return -1;
+        }
+        if (xVal > yVal) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    return (books.sort(sortByStrategy));
+}
 //called via callbacks and fills the table based on the provided array of "books"
 function createTableBody(books) {
+
     var tableBody = document.getElementById("booksTable");
+
     while (tableBody.firstChild) {
         tableBody.removeChild(tableBody.firstChild);
     }
+
     var options = new Array("id", "title", "author", "section", "shelf", "taken");
     console.log(books);
-
-    ordering(books);
+    books = ordering(books);
 
     for (i = 0; i < books.length; i++) {
 
@@ -86,36 +101,6 @@ function createTableBody(books) {
     }
 }
 
-function ordering(books) {
-    var options = new Array("id", "title", "author", "section", "shelf", "taken");
-    var strategy = options[document.getElementById("orderBy").selectedIndex];
-    console.log(strategy);
-
-    function sortByStrategy(x, y) {
-        var xInt = parseInt(x[strategy], 10) ,
-            yInt = parseInt(y[strategy], 10) ;
-
-        if (Number.isInteger(parseInt(x[strategy], 10))) {
-            xInt = parseInt(x[strategy], 10);
-            yInt = parseInt(y[strategy], 10);
-        } else {
-            xInt = x[strategy];
-            yInt = y[strategy];
-        }
-
-        if (xInt < yInt) {
-            return -1;
-        }
-        if (xInt > yInt) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-    books.sort(sortByStrategy);
-
-}
-
 function saveDB() {
     var request = makeAjax('save_db');
     request.send();
@@ -124,7 +109,9 @@ function saveDB() {
             console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
-                return response.success;
+                goodNewsSave();
+            } else {
+                badNewsSave();
             }
         }
     }
@@ -141,7 +128,6 @@ function checkAll() {
         }
     } else {
         for (var i = 0; i < checkboxes.length; i++) {
-            console.log(i);
             if (checkboxes[i].type == 'checkbox') {
                 checkboxes[i].checked = false;
             }
@@ -179,9 +165,11 @@ function deleteSelectedFromDB(callback) {
             console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
+                goodNewsDelete();
                 callback();
             } else {
                 console.log("Failed to delete books: " + response.failed);
+                badNewsDelete();
                 callBooks(createTableBody);
             }
         }
@@ -206,43 +194,63 @@ function deleteSelectedFromTable() {
     }
 }
 
-/*
-function getServerLocalTime() {
-    var xhr = new XMLHttpRequest();
+function addBook() {
+    var request = makeAjax('add');
+    var title = (document.getElementById("newTitle").value.trim());
+    var author = (document.getElementById("newAuthor").value.trim());
+    var section = (document.getElementById("newSection").value.trim());
+    var shelf = (document.getElementById("newShelf").value.trim());
+    var taken = (document.getElementById("newTaken").value.trim());
 
-    // Pay attention, that our server knows how to work with such destination
-    // This is good practice
-    xhr.open('POST', '/api/get_server_localtime');
-
-    // Content will be in JSON format, utf-8 charset
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-    xhr.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.response); // See console to see response
-
-            var response = JSON.parse(this.response || "{}");
-
-            // Our internal checks. Maybe some backend task has been failed and response data is wrong
-            if (response.success && response.localtime) {
-                document.getElementById('localtime').value = response.localtime;
-            }
+    if (title && author && section && shelf) {
+        request.send(JSON.stringify({
+            "title": title, "author": author, "section": section, "shelf": shelf, "taken": taken
+        }));
+        $('#newBookModal').modal('hide');
+        clearModal();
+        clearDiv();
+    } else {
+        if (!title) {
+            document.getElementById("divTitle").className = "form-group has-error";
+        } else if (!author) {
+            document.getElementById("divAuthor").className = "form-group has-error";
+        } else if (!section) {
+            document.getElementById("divSection").className = "form-group has-error";
+        } else if (!shelf) {
+            document.getElementById("divShelf").className = "form-group has-error";
         }
     }
 
-    xhr.send(JSON.stringify({call: 'new'}));
+    request.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            //console.log(this.response); // See console to see response
+            var response = JSON.parse(this.response || "{}");
+            if (response.success) {
+                goodNewsAdd();
+                callbackSearchBooks();
+            }
+            else {
+                badNewsAdd();
+            }
+        }
+    }
 }
 
-function onFormSubmit(form) {
-    var owner = form.owner.value || '',
-        sn = form.sn.value || '';
+function clearModal() {
+    var modal = document.getElementById("modalContainer");
 
-    makeAjaxCall({
-        owner: owner,
-        serialNumber: sn,
-        method: 'get_owner_info' // We will send this method as argument, however it's bad practice
-    });
-
-    alert('See browser console -> network to see the request');
+    var inputs = modal.getElementsByTagName('input');
+    for (index = 0; index < inputs.length; ++index) {
+        inputs[index].value = '';
+    }
 }
-*/
+function clearDiv() {
+    var modal = document.getElementById("modalContainer");
+
+    var inputs = modal.getElementsByTagName('div');
+    for (index = 0; index < inputs.length; ++index) {
+        if (inputs[index].className === "form-group has-error") {
+            inputs[index].className = "form-group";
+        }
+    }
+}

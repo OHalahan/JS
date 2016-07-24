@@ -30,6 +30,11 @@
 
         <!-- Main jumbotron for a primary marketing message or call to action -->
 
+        <div class="container" id="alerts">
+
+
+        </div>
+
         <div class="col-md-12">
             <form class="form-inline">
                 <div class="form-group">
@@ -52,6 +57,8 @@
             <br></br>
         </div>
 
+
+
         <div class="row">
             <div class="pull-left">
                 <button type="button" class="btn btn-primary" id="delete">Delete Selected</button>
@@ -61,10 +68,11 @@
             </div>
         </div>
 
+
+
         <div class="col-md-12">
             <hr>
         </div>
-
 
         <div class="col-md-12" style="height: 60vh; overflow: auto;">
             <table class="table table-striped">
@@ -85,6 +93,8 @@
                 </tbody>
             </table>
         </div>
+
+
 
 
         <div class="col-md-12">
@@ -121,29 +131,29 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Add new book to the library</h4>
+                <h4 class="modal-title">Add new book</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="modalContainer">
                 <form class="form-horizontal">
-                    <div class="form-group">
+                    <div class="form-group" id="divTitle">
                         <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="newTitle">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="divAuthor">
                         <label for="inputPassword3" class="col-sm-2 control-label">Author</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="newAuthor">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="divSection">
                         <label for="inputEmail3" class="col-sm-2 control-label">Section</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="newSection">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="divShelf">
                         <label for="inputPassword3" class="col-sm-2 control-label">Shelf</label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="newShelf">
@@ -158,7 +168,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="saveNewBook">Save changes</button>
+                <button type="button" class="btn btn-success" id="saveNewBook">Add Book</button>
             </div>
         </div>
     </div>
@@ -169,6 +179,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="alerts.js"></script>
     <script src="client.js"></script>
     <script src="handlers.js"></script>
 </body>
