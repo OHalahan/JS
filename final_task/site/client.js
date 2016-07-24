@@ -109,6 +109,7 @@ function saveDB() {
             console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
+                removeWarn();
                 goodNewsSave();
             } else {
                 badNewsSave();
@@ -165,6 +166,7 @@ function deleteSelectedFromDB(callback) {
             console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
+                addWarn();
                 goodNewsDelete();
                 callback();
             } else {
@@ -226,6 +228,7 @@ function addBook() {
             //console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
+                addWarn();
                 goodNewsAdd();
                 callbackSearchBooks();
             }

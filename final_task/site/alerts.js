@@ -3,8 +3,9 @@ function goodNewsAdd() {
 
     var myDiv = document.createElement("DIV");
     myDiv.className = "alert alert-success";
+    myDiv.innerHTML += '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
     myDiv.innerHTML += '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-    myDiv.innerHTML += '<strong>Success!</strong> Book was succesfully added.';
+    myDiv.innerHTML += '  Book was succesfully added.';
 
     target.appendChild(myDiv);
 
@@ -19,8 +20,9 @@ function badNewsAdd() {
 
     var myDiv = document.createElement("DIV");
     myDiv.className = "alert alert-danger";
+    myDiv.innerHTML += '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>';
     myDiv.innerHTML += '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-    myDiv.innerHTML += '<strong>Fail!</strong> Failed to add book.';
+    myDiv.innerHTML += '  Failed to add book.';
 
     target.appendChild(myDiv);
     setTimeout(function() {
@@ -34,8 +36,9 @@ function goodNewsDelete() {
 
     var myDiv = document.createElement("DIV");
     myDiv.className = "alert alert-success";
+    myDiv.innerHTML += '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
     myDiv.innerHTML += '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-    myDiv.innerHTML += '<strong>Success!</strong> Books were succesfully deleted.';
+    myDiv.innerHTML += '  Books were succesfully deleted.';
 
     target.appendChild(myDiv);
 
@@ -50,9 +53,9 @@ function badNewsDelete() {
 
     var myDiv = document.createElement("DIV");
     myDiv.className = "alert alert-danger";
+    myDiv.innerHTML += '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>';
     myDiv.innerHTML += '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-    myDiv.innerHTML += '<strong>Fail!</strong> Failed to delete book(s).';
-
+    myDiv.innerHTML += '  Failed to delete book(s).';
     target.appendChild(myDiv);
     setTimeout(function() {
         myDiv.parentNode.removeChild(myDiv);
@@ -65,8 +68,9 @@ function goodNewsSave() {
 
     var myDiv = document.createElement("DIV");
     myDiv.className = "alert alert-success";
+    myDiv.innerHTML += '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
     myDiv.innerHTML += '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-    myDiv.innerHTML += '<strong>Success!</strong> Books were succesfully Saved.';
+    myDiv.innerHTML += '  Books were succesfully Saved.';
 
     target.appendChild(myDiv);
 
@@ -81,12 +85,37 @@ function badNewsSave() {
 
     var myDiv = document.createElement("DIV");
     myDiv.className = "alert alert-danger";
+    myDiv.innerHTML += '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>';
     myDiv.innerHTML += '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-    myDiv.innerHTML += '<strong>Fail!</strong> Failed to save books.';
+    myDiv.innerHTML += '  Failed to save books.';
 
     target.appendChild(myDiv);
     setTimeout(function() {
         myDiv.parentNode.removeChild(myDiv);
     }, 4000);
 
+}
+
+function addWarn() {
+    var target = document.getElementById("alerts");
+    var isWarning = document.getElementById("notSaved");
+    if (isWarning) {
+        isWarning.parentNode.removeChild(isWarning);
+    }
+
+    var myDiv = document.createElement("DIV");
+    myDiv.className = "alert alert-warning";
+    myDiv.id = "notSaved";
+    myDiv.innerHTML += '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>';
+    myDiv.innerHTML += "  Save changes or they will be lost after server restart.";
+
+    target.appendChild(myDiv);
+
+}
+
+function removeWarn() {
+    var isWarning = document.getElementById("notSaved");
+    if (isWarning) {
+        isWarning.parentNode.removeChild(isWarning);
+    }
 }
