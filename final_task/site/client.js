@@ -32,8 +32,7 @@ function searchBooks(callback) {
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
                 callback(response["books"]);
-            }
-            else {
+            } else {
                 callback([]);
             }
         }
@@ -46,8 +45,8 @@ function ordering(books) {
     var strategy = options[document.getElementById("orderBy").selectedIndex];
 
     function sortByStrategy(x, y) {
-        var xVal = parseInt(x[strategy], 10) ,
-            yVal = parseInt(y[strategy], 10) ;
+        var xVal = parseInt(x[strategy], 10),
+            yVal = parseInt(y[strategy], 10);
 
         if (Number.isInteger(parseInt(x[strategy], 10))) {
             xVal = parseInt(x[strategy], 10);
@@ -141,6 +140,7 @@ function checkAll() {
 function callbackDeleteSelectedFromDB() {
     deleteSelectedFromDB(deleteSelectedFromTable);
 }
+
 function deleteSelectedFromDB(callback) {
 
     var table = document.getElementById("booksTable");;
@@ -206,7 +206,11 @@ function addBook() {
 
     if (title && author && section && shelf) {
         request.send(JSON.stringify({
-            "title": title, "author": author, "section": section, "shelf": shelf, "taken": taken
+            "title": title,
+            "author": author,
+            "section": section,
+            "shelf": shelf,
+            "taken": taken
         }));
         $('#newBookModal').modal('hide');
         clearModal();
@@ -231,8 +235,7 @@ function addBook() {
                 addWarn();
                 goodNewsAdd();
                 callbackSearchBooks();
-            }
-            else {
+            } else {
                 badNewsAdd();
             }
         }
@@ -247,6 +250,7 @@ function clearModal() {
         inputs[index].value = '';
     }
 }
+
 function clearDiv() {
     var modal = document.getElementById("modalContainer");
 
