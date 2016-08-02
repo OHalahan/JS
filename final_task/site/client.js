@@ -21,7 +21,7 @@ function searchBooks(callback) {
     var shelf = (document.getElementById("shelf").value || ".*");
     var taken = (document.getElementById("taken").value || ".*");
 
-    var groupped = new Array(["title", title], ["author", author], ["section", section], ["shelf", shelf], ["taken", taken]);
+    var groupped = {title: title, author: author, section: section, shelf: shelf, taken: taken};
 
     request.send(JSON.stringify({
         queries: groupped

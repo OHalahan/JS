@@ -33,16 +33,13 @@ else {
 any [qw(GET POST)] => '/api/search_books' => sub {
     my $self   = shift;
     my $body   = decode_json( $self->req->body || "{}" );
-    my @passed = @{ $body->{queries} };
-    my $final   = {};
+    my %passed = %{ $body->{queries} };
+    my ($final, @result) = ( {}, () );
 
-    my @result = ();
-
-    while (@passed) {
-        my ( $strategy, $pattern ) = @{ shift @passed };
-        $pattern =~ s/\*/\.*/;
+    for my $strategy (keys %passed) {
+        my $pattern = $passed{$strategy};
+        $pattern =~ s/^\*/\.*/;
         @result = $book_db->search_book( $strategy, $pattern, @result );
-        print "@result\n";
         if (!@result) {
             $final->{success} = 0;
             last;
