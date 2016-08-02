@@ -13,7 +13,7 @@ function callbackSearchBooks() {
 
 //should be called with a callback function to synchronise output
 function searchBooks(callback) {
-    var request = makeAjax('search');
+    var request = makeAjax('search_books');
 
     var title = (document.getElementById("title").value || ".*");
     var author = (document.getElementById("author").value || ".*");
@@ -197,7 +197,7 @@ function deleteSelectedFromTable() {
 }
 
 function addBook() {
-    var request = makeAjax('add');
+    var request = makeAjax('add_book');
     var title = (document.getElementById("newTitle").value.trim());
     var author = (document.getElementById("newAuthor").value.trim());
     var section = (document.getElementById("newSection").value.trim());

@@ -24,44 +24,52 @@ if ( $book_db->load_db($file) ) {
       . scalar( keys %{ $book_db->get_books } )
       . " book(s) in total\n\n";
 }
+else {
+    print "Cannot not load a file: $file\n";
+    exit;
+}
 ###
 
-any [qw(GET POST)] => '/api/search' => sub {
+any [qw(GET POST)] => '/api/search_books' => sub {
     my $self   = shift;
     my $body   = decode_json( $self->req->body || "{}" );
     my @passed = @{ $body->{queries} };
-
-    my $result  = 1;
-    my @matched = ();
     my $final   = {};
 
-    if ($book_db) {
-        $final->{success} = 0;
+    my @result = ();
 
+    while (@passed) {
+        my ( $strategy, $pattern ) = @{ shift @passed };
         $pattern =~ s/\*/\.*/;
-        
-
-        #@matched = merge_results( \@matched );
-        #for my $book (@matched) {
-        #    push @{ $final->{books} },
-        #      {
-        #        "id"      => $book,
-        #        "title"   => $book_db->get_books->{$book}->get_title,
-        #        "author"  => $book_db->get_books->{$book}->get_author,
-        #        "section" => $book_db->get_books->{$book}->get_section,
-        #        "shelf"   => $book_db->get_books->{$book}->get_shelf,
-        #        "taken"   => $book_db->get_books->{$book}->get_taken,
-        #      };
-        #}
+        @result = $book_db->search_book( $strategy, $pattern, @result );
+        print "@result\n";
+        if (!@result) {
+            $final->{success} = 0;
+            last;
+        }
+        $final->{success} = 1;
     }
+
+    for my $book (@result) {
+        push @{ $final->{books} },
+          {
+            "id"      => $book,
+            "title"   => $book_db->get_books->{$book}->get_title,
+            "author"  => $book_db->get_books->{$book}->get_author,
+            "section" => $book_db->get_books->{$book}->get_section,
+            "shelf"   => $book_db->get_books->{$book}->get_shelf,
+            "taken"   => $book_db->get_books->{$book}->get_taken,
+          };
+    }
+
     $self->render( json => $final );
 };
 
-any [qw(GET POST)] => '/api/add' => sub {
+any [qw(GET POST)] => '/api/add_book' => sub {
     my $self = shift;
     my $body = decode_json( $self->req->body || "{}" );
     my ( $title, $author, $section, $shelf, $taken ) = ( '', '', '', '', '' );
-    my ( $result, $counter ) = ( 0, 0 );
+    my ( $result, $valid ) = ( 0, 1 );
 
     $title   = $body->{title};
     $author  = $body->{author};
@@ -71,29 +79,27 @@ any [qw(GET POST)] => '/api/add' => sub {
 
     #check whether all mandatory fields are present
     for my $option ( $title, $author, $section, $shelf ) {
-        if ( $option !~ /^\s+$/ && $option ) {
-            $counter++;
+        if ( $option =~ /^\s+$/ || !$option ) {
+            $valid = 0;
+            last;
         }
     }
+    my $new_book = $book_db->add_book(
+        title   => $title,
+        author  => $author,
+        section => $section,
+        shelf   => $shelf,
+        taken   => $taken
+    );
 
-    if (
-           $counter == 4
-        && $book_db
-        && $book_db->add_book(
-            title   => $title,
-            author  => $author,
-            section => $section,
-            shelf   => $shelf,
-            taken   => $taken
-        )
-      )
-    {
+    if ( $valid && $new_book ) {
         $result = 1;
     }
 
     $self->render(
         json => {
             success => $result,
+            id => $new_book
         }
     );
 };
@@ -103,7 +109,7 @@ any [qw(GET POST)] => '/api/save_db' => sub {
     my $body   = decode_json( $self->req->body || "{}" );
     my $result = 0;
 
-    if ( $book_db && $book_db->save_db($file) ) {
+    if ( $book_db->save_db($file) ) {
         $result = 1;
     }
     $self->render(
@@ -116,18 +122,18 @@ any [qw(GET POST)] => '/api/save_db' => sub {
 any [qw(GET POST)] => '/api/delete_books' => sub {
     my $self  = shift;
     my $body  = decode_json( $self->req->body || "{}" );
-    my @books = ( @{ $body->{books} } );
+    my $reference = $body->{books} || [-1];
+
+    my @books = @{ $reference };
     my ( $result, $failed ) = ( 1, () );
 
-    #if DB exists delete books
-    if ($book_db) {
-        for my $book (@books) {
-            if ( !$book_db->delete_book($book) ) {
-                push @{$failed}, $book;
-                my $result = 0;
-            }
+    for my $book (@books) {
+        if ( !$book_db->delete_book($book) ) {
+            push @{$failed}, $book;
+            $result = 0;
         }
     }
+
     $self->render(
         json => {
             success => $result,
