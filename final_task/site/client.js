@@ -14,12 +14,13 @@ function callbackSearchBooks() {
 //should be called with a callback function to synchronise output
 function searchBooks(callback) {
     var request = makeAjax('search_books');
+    var form = document.forms.search;
 
-    var title = (document.getElementById("title").value || ".*");
-    var author = (document.getElementById("author").value || ".*");
-    var section = (document.getElementById("section").value || ".*");
-    var shelf = (document.getElementById("shelf").value || ".*");
-    var taken = (document.getElementById("taken").value || ".*");
+    var title = (form.title.value || ".*");
+    var author = (form.author.value || ".*");
+    var section = (form.section.value || ".*");
+    var shelf = (form.shelf.value || ".*");
+    var taken = (form.taken.value || ".*");
 
     var groupped = {title: title, author: author, section: section, shelf: shelf, taken: taken};
 
@@ -198,11 +199,13 @@ function deleteSelectedFromTable() {
 
 function addBook() {
     var request = makeAjax('add_book');
-    var title = (document.getElementById("newTitle").value.trim());
-    var author = (document.getElementById("newAuthor").value.trim());
-    var section = (document.getElementById("newSection").value.trim());
-    var shelf = (document.getElementById("newShelf").value.trim());
-    var taken = (document.getElementById("newTaken").value.trim());
+    var form = document.forms.addForm;
+
+    var title = form.newTitle.value.trim();
+    var author = form.newAuthor.value.trim();
+    var section = form.newSection.value.trim();
+    var shelf = form.newShelf.value.trim();
+    var taken = form.newTaken.value.trim();
 
     if (title && author && section && shelf) {
         request.send(JSON.stringify({

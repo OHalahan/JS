@@ -36,21 +36,21 @@
         </div>
 
         <div class="col-md-12">
-            <form class="form-inline">
+            <form class="form-inline" name="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" id="title" placeholder="Title">
+                    <input type="text" class="form-control" name="title" placeholder="Title">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="author" placeholder="Author">
+                    <input type="text" class="form-control" name="author" placeholder="Author">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="section" placeholder="Section">
+                    <input type="text" class="form-control" name="section" placeholder="Section">
                 </div>
                 <div class="form-group">
-                    <input type="number" class="form-control" id="shelf" placeholder="Shelf">
+                    <input type="number" class="form-control" name="shelf" placeholder="Shelf">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" id="taken" placeholder="On Hands">
+                    <input type="text" class="form-control" name="taken" placeholder="On Hands">
                 </div>
                 <button type="button" class="btn btn-success" id="search">Filter</button>
             </form>
@@ -134,35 +134,35 @@
                     <h4 class="modal-title">Add new book</h4>
                 </div>
                 <div class="modal-body" id="modalContainer">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" name="addForm">
                         <div class="form-group" id="divTitle">
                             <label for="inputEmail3" class="col-sm-2 control-label">Title</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="newTitle">
+                                <input type="text" class="form-control" name="title">
                             </div>
                         </div>
                         <div class="form-group" id="divAuthor">
                             <label for="inputPassword3" class="col-sm-2 control-label">Author</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="newAuthor">
+                                <input type="text" class="form-control" name="author">
                             </div>
                         </div>
                         <div class="form-group" id="divSection">
                             <label for="inputEmail3" class="col-sm-2 control-label">Section</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="newSection">
+                                <input type="text" class="form-control" name="section">
                             </div>
                         </div>
                         <div class="form-group" id="divShelf">
                             <label for="inputPassword3" class="col-sm-2 control-label">Shelf</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control" id="newShelf">
+                                <input type="number" class="form-control" name="shelf">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword3" class="col-sm-2 control-label">On Hands</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="newTaken">
+                                <input type="text" class="form-control" name="taken">
                             </div>
                         </div>
                     </form>
