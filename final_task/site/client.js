@@ -198,8 +198,9 @@ function deleteSelectedFromTable() {
 }
 
 function addBook() {
-    var request = makeAjax('add_book');
-    var form = document.forms.addForm;
+    var request = makeAjax('add_book'),
+        formElements = document.forms.addForm.elements,
+        bookOptions = {};
 
     var title = form.newTitle.value.trim();
     var author = form.newAuthor.value.trim();
