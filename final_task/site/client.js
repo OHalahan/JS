@@ -22,14 +22,19 @@ function searchBooks(callback) {
     var shelf = (form.shelf.value || ".*");
     var taken = (form.taken.value || ".*");
 
-    var groupped = {title: title, author: author, section: section, shelf: shelf, taken: taken};
+    var groupped = {
+        title: title,
+        author: author,
+        section: section,
+        shelf: shelf,
+        taken: taken
+    };
 
     request.send(JSON.stringify({
         queries: groupped
     }));
     request.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            //console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
                 callback(response["books"]);
@@ -78,7 +83,6 @@ function createTableBody(books) {
     }
 
     var options = new Array("id", "title", "author", "section", "shelf", "taken");
-    console.log(books);
     books = ordering(books);
 
     for (i = 0; i < books.length; i++) {
@@ -106,7 +110,6 @@ function saveDB() {
     request.send();
     request.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
                 removeWarn();
@@ -156,22 +159,18 @@ function deleteSelectedFromDB(callback) {
         }
     }
 
-    console.log("Selected books: " + foundIDs);
-
     var request = makeAjax('delete_books');
     request.send(JSON.stringify({
         books: foundIDs
     }));
     request.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
                 addWarn();
                 goodNewsDelete();
                 callback();
             } else {
-                console.log("Failed to delete books: " + response.failed);
                 badNewsDelete();
                 callBooks(createTableBody);
             }
@@ -202,38 +201,29 @@ function addBook() {
         formElements = document.forms.addForm.elements,
         bookOptions = {};
 
-    var title = form.newTitle.value.trim();
-    var author = form.newAuthor.value.trim();
-    var section = form.newSection.value.trim();
-    var shelf = form.newShelf.value.trim();
-    var taken = form.newTaken.value.trim();
+    for (var i = 0; i < formElements.length; i++) {
+        bookOptions[formElements[i].name] = formElements[i].value;
+    }
 
-    if (title && author && section && shelf) {
-        request.send(JSON.stringify({
-            "title": title,
-            "author": author,
-            "section": section,
-            "shelf": shelf,
-            "taken": taken
-        }));
+    if (bookOptions["title"] && bookOptions["author"] && bookOptions["section"] && bookOptions["shelf"]) {
+        request.send(JSON.stringify(bookOptions));
         $('#newBookModal').modal('hide');
         clearModal();
         clearDiv();
     } else {
-        if (!title) {
+        if (!bookOptions["title"]) {
             document.getElementById("divTitle").className = "form-group has-error";
-        } else if (!author) {
+        } else if (!bookOptions["author"]) {
             document.getElementById("divAuthor").className = "form-group has-error";
-        } else if (!section) {
+        } else if (!bookOptions["section"]) {
             document.getElementById("divSection").className = "form-group has-error";
-        } else if (!shelf) {
+        } else if (!bookOptions["shelf"]) {
             document.getElementById("divShelf").className = "form-group has-error";
         }
     }
 
     request.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            //console.log(this.response); // See console to see response
             var response = JSON.parse(this.response || "{}");
             if (response.success) {
                 addWarn();
